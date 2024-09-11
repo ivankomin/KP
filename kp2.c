@@ -6,6 +6,7 @@ int main() {
     int continueProgram;
 
     printf("This program calculates the perimeter and area of a triangle as well as the height, median and bisector of each side.\n");
+    printf("test change\n");
     
     do {
         // Зчитування сторін трикутника
