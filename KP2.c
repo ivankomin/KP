@@ -4,30 +4,66 @@
 int main() {
     double a, b, c;
     int continueProgram;
-    printf("This program calculates the perimeter and area of a triangle as well as the height, median and bisector of each side.\n");
-
+    printf("This program calculates the perimeter and area of a triangle as well as the height, median and bisector for each side.\n");
+    
     do {
-        // Зчитування сторін трикутника
-        printf("Enter side a: ");
-        if (scanf("%lf", &a) != 1 || a <= 0.01 || a >= 1000) {
-            printf("Enter valid number between 0.01 and 1000!\n");
-            return 0;
-        }
-        printf("Enter side b: ");
-        if (scanf("%lf", &b) != 1 || b <= 0.01 || b >= 1000) {
-            printf("Enter valid number between 0.01 and 1000!\n");
-            return 0;
-        }
-        printf("Enter side c: ");
-        if (scanf("%lf", &c) != 1 || c <= 0.01 || c >= 1000) {
-            printf("Enter valid number between 0.01 and 1000!\n");
-            return 0;
-        }
+        int validInput;
+        // Цикл для валідації вводу сторони a
+        do {
+            printf("Enter side a: ");
+            validInput = scanf("%lf", &a);
 
-        // Перевірка на те, чи є задані сторони трикутником
+            // Перевірка, чи ввід дійсний і в межах допустимого діапазону
+            if (validInput != 1 || a <= 0.01 || a >= 1000) {
+                printf("Enter a valid number between 0.01 and 1000!\n");
+                // Очищення буфера вводу
+                while (getchar() != '\n');
+            } 
+            else {
+                // Вийти з циклу, якщо ввід дійсний
+                break;
+            }
+        } while (validInput != 1 || a <= 0.01 || a >= 1000);
+
+        // Цикл для валідації вводу сторони b
+        do {
+            printf("Enter side b: ");
+            validInput = scanf("%lf", &b);
+
+            // Перевірка, чи ввід дійсний і в межах допустимого діапазону
+            if (validInput != 1 || b <= 0.01 || b >= 1000) {
+                printf("Enter a valid number between 0.01 and 1000!\n");
+                // Очищення буфера вводу
+                while (getchar() != '\n');
+            } 
+            else {
+                // Вийти з циклу, якщо ввід дійсний
+                break;
+            }
+        } while (validInput != 1 || b <= 0.01 || b >= 1000);
+
+        // Цикл для валідації вводу сторони c
+        do {
+            printf("Enter side c: ");
+            validInput = scanf("%lf", &c);
+
+            // Перевірка, чи ввід дійсний і в межах допустимого діапазону
+            if (validInput != 1 || c <= 0.01 || c >= 1000) {
+                printf("Enter a valid number between 0.01 and 1000!\n");
+                // Очищення буфера вводу
+                while (getchar() != '\n');
+            } 
+            else {
+                // Вийти з циклу, якщо ввід дійсний
+                break;
+            }
+        } while (validInput != 1 || c <= 0.01 || c >= 1000);
+
+        // Перевірка, чи сторони утворюють дійсний трикутник
         if ((a + b <= c) || (a + c <= b) || (b + c <= a)) {
             printf("The entered sides do not form a triangle!\n");
-            return 0;
+            // Перезапуск зовнішнього циклу для повторного введення
+            continue;
         }
 
         unsigned decNum = 0;
