@@ -68,11 +68,17 @@ int main() {
 
         unsigned decNum = 0;
         // Зчитування кількості десяткових знаків для виводу
-        printf("Enter a number of decimal places (0-12): ");
-        if ((scanf("%u", &decNum) != 1) || (decNum > 12)) {
-            printf("Enter valid number!\n");
-            return 0;
-        }
+        
+        do{
+            printf("Enter a number of decimal places (0-12): ");
+            if ((scanf("%u", &decNum) != 1) || (decNum > 12)) {
+                printf("Enter valid number!\n");
+                while (getchar() != '\n');
+            }
+            else {
+                break;
+            }
+        } while ((decNum > 12) || (scanf("%u", &decNum) != 1));
 
         // Обчислення периметра і площі трикутника
         double P = a + b + c;
