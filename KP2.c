@@ -2,7 +2,7 @@
 #include <math.h>
 
 int main() {
-    double a, b, c;
+    double a, b, c;//=0
     int continueProgram;
     printf("This program calculates the perimeter and area of a triangle as well as the height, median and bisector for each side.\n");
     
@@ -22,7 +22,7 @@ int main() {
             else {
                 // Вийти з циклу, якщо ввід дійсний
                 break;
-            }
+            }//add flush here, remove break
         } while (validInput != 1 || a <= 0.01 || a >= 1000);
 
         // Цикл для валідації вводу сторони b
@@ -83,18 +83,18 @@ int main() {
 
         // Обчислення периметра і площі трикутника
         double P = a + b + c;
-        double p = (a + b + c) / 2;
+        double p = (a + b + c) / 2.0;
         double s = sqrt(p * (p - a) * (p - b) * (p - c));
         
         // Обчислення висот трикутника
-        double hForA = (2 * s) / a;
-        double hForB = (2 * s) / b;
-        double hForC = (2 * s) / c;
+        double hForA = (2.0 * s) / a;
+        double hForB = (2.0 * s) / b;
+        double hForC = (2.0 * s) / c;
         
         // Обчислення медіан трикутника
-        double mForA = (sqrt(2*pow(b,2) + pow(c,2) - pow(a,2))) / 2.0;
-        double mForB = (sqrt(2*pow(a,2) + pow(c,2) - pow(b,2))) / 2.0;
-        double mForC = (sqrt(2*pow(a,2) + pow(b,2) - pow(c,2))) / 2.0;
+        double mForA = (sqrt(2.0*pow(b,2) + pow(c,2) - pow(a,2))) / 2.0;
+        double mForB = (sqrt(2.0*pow(a,2) + pow(c,2) - pow(b,2))) / 2.0;
+        double mForC = (sqrt(2.0*pow(a,2) + pow(b,2) - pow(c,2))) / 2.0;
 
         // Обчислення бісектрис трикутника
         double bisForA = (2.0 / (b + c)) * sqrt(b * c * p * (p - a));
