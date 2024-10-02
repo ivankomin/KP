@@ -2,7 +2,7 @@
 #include <math.h>
 
 int main() {
-    double a, b, c;//=0
+    double a = 0, b = 0, c = 0;
     int continueProgram;
     printf("This program calculates the perimeter and area of a triangle as well as the height, median and bisector for each side.\n");
     
@@ -72,7 +72,7 @@ int main() {
         do{
             printf("Enter a number of decimal places (0-12): ");
             validInput = scanf("%u", &decNum);
-            if (validInput != 1 || decNum > 12) {
+            if (validInput != 1 || decNum == 0 || decNum > 12) {
                 printf("Enter valid number!\n");
                 while (getchar() != '\n');
             }
