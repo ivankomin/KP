@@ -1,7 +1,7 @@
 #include <stdio.h>
 double getValidK(){
     double k = 0;
-    int validInput = 0;
+    char validInput = 0;
         do{
             printf("Enter the root degree (k), k != 0: ");
             validInput = scanf("%lf", &k);
@@ -13,15 +13,14 @@ double getValidK(){
             else if (k == 0) {
                 printf("K cannot be equal to 0.\n");
                 validInput = 0;
-            }
-            fflush(stdin);
+            }           
         } while(!validInput);
     return k;
 }
 
 double getValidX(double k){
     double x = 0;
-    int validInput = 0;
+    char validInput = 0;
     do{
             printf("Enter the number (x), Remember: if k is even, then x must be >= 0.\nALSO remember that if you have typed in a non-integer root degree, x CANNOT be negative: ");
             validInput = scanf("%lf", &x);
@@ -30,18 +29,23 @@ double getValidX(double k){
             if (!validInput) {
                 printf("Enter a valid number!\n");
             }
-            else if ((int)k%2 == 0 && x < 0) {
-                printf("If k is even, then x must be >= 0!\n");
-                validInput = 0;
-            }
-            fflush(stdin);
+            else if(x<0) {
+                if (floor(k)!=k) {
+                    printf("If k isn't an integer, x must be >= 0!\n");
+                    validInput = 0;
+                }
+                else if((int)k%2==0) {
+                    printf("If k is even, x must be >= 0!\n");
+                    validInput = 0;
+                }
+            }   
         } while(!validInput);
     return x;
 }
 
 double getValidE(){
     double e = 0;
-    int validInput = 0;
+    char validInput = 0;
     do{
             printf("Enter the accuracy in exponent (from 1e-15 to 1e-1): ");
             validInput = scanf("%lf", &e);
@@ -54,7 +58,6 @@ double getValidE(){
                 printf("Invalid accuracy!\n");
                 validInput = 0;
             }
-            fflush(stdin);
         } while(!validInput);
     return e;
 }

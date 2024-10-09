@@ -14,16 +14,16 @@ int main() {
             validInput = scanf("%lf", &a);
 
             // Перевірка, чи ввід дійсний і в межах допустимого діапазону
-            if (validInput != 1 || a <= 0.01 || a >= 1000) {
-                printf("Enter a valid number between 0.01 and 1000!\n");
+            if (validInput != 1 || a <= 0.0001 || a >= 10000) {
+                printf("Enter a valid number between 0.0001 and 10000!\n");
                 // Очищення буфера вводу
                 while (getchar() != '\n');
             } 
             else {
                 // Вийти з циклу, якщо ввід дійсний
                 break;
-            }//add flush here, remove break
-        } while (validInput != 1 || a <= 0.01 || a >= 1000);
+            }
+        } while (validInput != 1 || a <= 0.0001 || a >= 10000);
 
         // Цикл для валідації вводу сторони b
         do {
@@ -31,8 +31,8 @@ int main() {
             validInput = scanf("%lf", &b);
 
             // Перевірка, чи ввід дійсний і в межах допустимого діапазону
-            if (validInput != 1 || b <= 0.01 || b >= 1000) {
-                printf("Enter a valid number between 0.01 and 1000!\n");
+            if (validInput != 1 || b <= 0.0001 || b >= 10000) {
+                printf("Enter a valid number between 0.0001 and 10000!\n");
                 // Очищення буфера вводу
                 while (getchar() != '\n');
             } 
@@ -40,7 +40,7 @@ int main() {
                 // Вийти з циклу, якщо ввід дійсний
                 break;
             }
-        } while (validInput != 1 || b <= 0.01 || b >= 1000);
+        } while (validInput != 1 || b <= 0.0001 || b >= 10000);
 
         // Цикл для валідації вводу сторони c
         do {
@@ -48,8 +48,8 @@ int main() {
             validInput = scanf("%lf", &c);
 
             // Перевірка, чи ввід дійсний і в межах допустимого діапазону
-            if (validInput != 1 || c <= 0.01 || c >= 1000) {
-                printf("Enter a valid number between 0.01 and 1000!\n");
+            if (validInput != 1 || c <= 0.0001 || c >= 10000) {
+                printf("Enter a valid number between 0.0001 and 10000!\n");
                 // Очищення буфера вводу
                 while (getchar() != '\n');
             } 
@@ -57,7 +57,7 @@ int main() {
                 // Вийти з циклу, якщо ввід дійсний
                 break;
             }
-        } while (validInput != 1 || c <= 0.01 || c >= 1000);
+        } while (validInput != 1 || c <= 0.0001 || c >= 10000);
 
         // Перевірка, чи сторони утворюють дійсний трикутник
         if ((a + b <= c) || (a + c <= b) || (b + c <= a)) {
@@ -92,9 +92,9 @@ int main() {
         double hForC = (2.0 * s) / c;
         
         // Обчислення медіан трикутника
-        double mForA = (sqrt(2.0*pow(b,2) + pow(c,2) - pow(a,2))) / 2.0;
-        double mForB = (sqrt(2.0*pow(a,2) + pow(c,2) - pow(b,2))) / 2.0;
-        double mForC = (sqrt(2.0*pow(a,2) + pow(b,2) - pow(c,2))) / 2.0;
+        double mForA = sqrt(2 * pow(b, 2) + 2 * pow(c, 2) - pow(a, 2)) / 2.0;
+        double mForB = sqrt(2 * pow(a, 2) + 2 * pow(c, 2) - pow(b, 2)) / 2.0;
+        double mForC = sqrt(2 * pow(a, 2) + 2 * pow(b, 2) - pow(c, 2)) / 2.0;
 
         // Обчислення бісектрис трикутника
         double bisForA = (2.0 / (b + c)) * sqrt(b * c * p * (p - a));
