@@ -19,7 +19,7 @@ char validateE(double e){
     return e >= 1e-15 && e <= 1e-1;
 }
 
-double validateGeneralInput(const char* prompt, char (*cond)(double, double),double param, const char* errorMessage){
+double validateGeneralInput(const char* prompt, char (*cond)(double, double),double k, const char* errorMessage){
     char validInput = 0;
     double input = 0;
     do{
@@ -29,7 +29,7 @@ double validateGeneralInput(const char* prompt, char (*cond)(double, double),dou
         if (!validInput){
             printf("Enter a valid number!\n");
         }
-        else if (!cond(input, param)){
+        else if (!cond(input, k)){
             printf("%s", errorMessage);
             validInput = 0;
         }
