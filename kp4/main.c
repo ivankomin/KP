@@ -23,7 +23,9 @@ int main() {
         pick = validateChars("Enter what you want to calculate ('1' for sin or '2' for cos): ", validateCalcChoice, "Invalid input!\n");
         outputFormat = validateChars("Enter output format ('f' for float or 'e' for exponent): ", validateFormat, "Invalid input!\n");
 
-        pick == '1' ? printArray(x1, x2, dx, e, taylorSin, sin, outputFormat) : printArray(x1, x2, dx, e, taylorCos, cos, outputFormat);  
+        pick == '1' 
+                ? printArray(x1, x2, dx, e, taylorSin, sin, outputFormat) 
+                : printArray(x1, x2, dx, e, taylorCos, cos, outputFormat);  
         
         printf("Press '0' to quit or any other key to continue: ");
     }while (getchar () != 48);

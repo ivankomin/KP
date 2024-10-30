@@ -7,7 +7,9 @@ double to_rad(double x){
     return x * M_PI / 180.0;
 }
 double taylorSin(double x, double e) {
-    x = fabs(x) <= 360 ? to_rad(x): to_rad(fmod(x,2.0*M_PI));
+    x = fabs(x) <= 360 
+            ? to_rad(x)
+            : to_rad(fmod(x,2.0*M_PI));
     double n = 1;
     double delta = x, sinx = delta;
     do{
@@ -18,7 +20,9 @@ double taylorSin(double x, double e) {
     return sinx;
 }
 double taylorCos(double x, double e) {
-    x = fabs(x) <= 360 ? to_rad(x): to_rad(fmod(x,2.0*M_PI));
+    x = fabs(x) <= 360 
+            ? to_rad(x)
+            : to_rad(fmod(x,2.0*M_PI));
     double n = 1;
     double delta = 1, cosx = delta;
     do{
