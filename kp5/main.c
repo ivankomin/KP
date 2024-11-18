@@ -20,6 +20,9 @@ int main(){
         char list[numOfStrings][lengthOfStrings + 1];
         char *addr [numOfStrings];
 
+        memset(list, 0, sizeof(list));
+        memset(addr, 0, sizeof(addr));
+
         pick = validateChars("Enter how you want to fill your array 'r' for random or 'm' for manual input: ", validateFormat, "Invalid input!\n");
         
         if (pick == 'm') {
