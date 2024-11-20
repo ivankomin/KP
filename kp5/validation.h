@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #define MAX_LENGTH 100
+#define MIN_LENGTH 2
 char validateFormat(char pick){
     return pick != 'r' && pick != 'm';
 }
@@ -19,7 +20,7 @@ unsigned validateIntInput(const char* prompt, const char* errorMessage){
         if (!validInput) {
             printf("Enter a valid number!\n");
         }
-        else if(input > MAX_LENGTH || input == 0) {
+        else if(input > MAX_LENGTH || input < MIN_LENGTH) {
             printf("%s", errorMessage);
             validInput = 0;
         }

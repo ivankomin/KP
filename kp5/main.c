@@ -14,8 +14,8 @@ int main(){
         char pick = 0;
         srand(time(NULL));
 
-        numOfStrings = validateIntInput("Enter the number of strings (up to 100): ", "The number of strings must be between 0 and 100!\n");
-        lengthOfStrings = validateIntInput("Enter the length of the strings (up to 100): ", "The length of the strings must be between 0 and 100!\n");
+        numOfStrings = validateIntInput("Enter the number of strings (from 2 up to 100): ", "The number of strings must be between 2 and 100!\n");
+        lengthOfStrings = validateIntInput("Enter the length of the strings (from 2 up to 100): ", "The length of the strings must be between 2 and 100!\n");
 
         char list[numOfStrings][lengthOfStrings + 1];
         char *addr [numOfStrings];
@@ -23,7 +23,7 @@ int main(){
         memset(list, 0, sizeof(list));
         memset(addr, 0, sizeof(addr));
 
-        pick = validateChars("Enter how you want to fill your array 'r' for random or 'm' for manual input: ", validateFormat, "Invalid input!\n");
+        pick = validateChars("Enter how you want to fill your array ('r' for random or 'm' for manual input): ", validateFormat, "Invalid input!\n");
         
         if (pick == 'm') {
             printf("Warning: your input must include only alphabetic characters (no whitespaces, digits etc.), any characters beyond user-specified length will be ignored\n");
@@ -31,7 +31,7 @@ int main(){
                 do {
                     printf("Enter string %d: ", i + 1);
                     fgets(list[i], lengthOfStrings + 2, stdin);
-
+                    
                     if (list[i][strcspn(list[i], "\n")] != '\n') {
                         list[i][lengthOfStrings] = '\0';
                         while (getchar() != '\n'); 
@@ -44,32 +44,24 @@ int main(){
             }
         }
         
-        else{
+        else {
             for (int i = 0; i < numOfStrings; i++) {
                 for (int j = 0; j < lengthOfStrings; j++) {
                     list[i][j] = generateRandomChar(MIN_RANGE, MAX_RANGE);
                 }
                 addr[i] = list[i];
                 list[i][lengthOfStrings] = '\0';
-                fflush(stdin);
             }
         }
-        printf("Your array (unsorted): \n\n");
-        for (int i = 0; i < numOfStrings; i++){
-            printf("%d. -> %s\n", i+1,list[i]);
-        }
 
+        printArray(addr, numOfStrings, "unsorted");
         pick = validateChars("\nIn which order you want to sort your array ('a' for ascending or 'd' for descending): ", validateSortChoice, "Invalid input!\n");
 
         pick == 'a' 
                 ? sortAsc(addr, numOfStrings) 
                 : sortDesc(addr, numOfStrings);
         
-        printf("\nYour array (sorted): \n\n");
-        for (int i = 0; i < numOfStrings; i++){
-            printf("%d. -> %s\n", i+1,addr[i]);
-        }
-
+        printArray(addr, numOfStrings, "sorted");
         printf("\nPress '0' to quit or any other key to continue: ");
     } while (getchar() != 48);
 

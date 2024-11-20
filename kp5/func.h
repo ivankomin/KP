@@ -34,4 +34,11 @@ char generateRandomChar(int min, int max) {
     return generatedChar;
 }
 
+void printArray(char **array, int numOfStrings, const char *description) {
+    printf("Your array (%s): \n\n", description);
+    for (int i = 0; i < numOfStrings; i++) {
+        printf("%d. -> %s\n", i + 1, array[i]);
+    }
+    printf("\n");
+}
 #endif
