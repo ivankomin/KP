@@ -9,10 +9,10 @@
 
 int main(){
     printf("This program takes a number of strings of certain length from the user and sorts them alphabetically.\nThis program works only with latin characters.\n");
+    srand(time(NULL));
     do {
         unsigned numOfStrings = 0, lengthOfStrings = 0;
         char pick = 0;
-        srand(time(NULL));
 
         numOfStrings = validateIntInput("Enter the number of strings (from 2 up to 100): ", "The number of strings must be between 2 and 100!\n");
         lengthOfStrings = validateIntInput("Enter the length of the strings (from 2 up to 100): ", "The length of the strings must be between 2 and 100!\n");
@@ -55,14 +55,15 @@ int main(){
         }
 
         printArray(addr, numOfStrings, "unsorted");
-        pick = validateChars("\nIn which order you want to sort your array ('a' for ascending or 'd' for descending): ", validateSortChoice, "Invalid input!\n");
+        pick = validateChars("In which order you want to sort your array ('a' for ascending or 'd' for descending): ", validateSortChoice, "Invalid input!\n");
 
         pick == 'a' 
                 ? sortAsc(addr, numOfStrings) 
                 : sortDesc(addr, numOfStrings);
         
         printArray(addr, numOfStrings, "sorted");
-        printf("\nPress '0' to quit or any other key to continue: ");
+
+        printf("Press '0' to quit or any other key to continue: ");
     } while (getchar() != 48);
 
     return 0;
