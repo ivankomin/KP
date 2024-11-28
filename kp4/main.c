@@ -5,6 +5,7 @@
 
 void printArray(double x1, double x2, double dx, double e, double (*taylorFunc)(double, double), double libFunc(double), char outputFormat);
 //testsetet
+//
 int main() {
     printf("This program calculates the sine and cosine of the range of angles from x1 to x2 with step dx with specified precision (e).\n");
 
