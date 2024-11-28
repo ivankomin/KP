@@ -41,8 +41,9 @@ int main(){
                 printf("Something went wrong...\n");
                 freeArrays(rows, b, x, xp, a);
                 return 0;
-        }
+        }  
         printf("Press '0' to quit or any other key to continue: ");
+        freeArrays(rows, b, x, xp, a);
     }while(getchar() != 48);
 
     return 0;
