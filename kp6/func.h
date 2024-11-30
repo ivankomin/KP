@@ -30,15 +30,17 @@ double generateRandomDouble(double min, double max) {
 }
 
 void printInitSlae(unsigned rows, double **a, double *b) {
-    printf("Initial SLAE: \n");
+    printf("\nInitial SLAE: \n\n");
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < rows; j++) {
             if(j == 0) {
-                printf(" %.1lf*x%d", a[i][j], j+1);
+                printf(" %.2lf*x%d", a[i][j], j+1);
             } else {
-                printf(" %+.1lf*x%d", a[i][j], j+1);
+                printf(" %+.2lf*x%d", a[i][j], j+1);
             }
         }
+        printf(" = %.2lf\n", b[i]);
     }
 }
+
 #endif

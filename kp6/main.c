@@ -2,7 +2,7 @@
 #include <time.h>
 #include "validation.h"
 #include "func.h"
-#define MAX_LENGTH 100
+#define MAX_LENGTH 10
 #define MIN_LENGTH 2
 #define MIN_RANGE -100
 #define MAX_RANGE 100
@@ -16,7 +16,7 @@ int main(){
         double *b, *x, *xp;
         double **a;
 
-        rows = validateIntInput("Enter the number of rows (from 2 up to 100): ", MAX_LENGTH, MIN_LENGTH, "The number of rows must be in the required range!\n");
+        rows = validateIntInput("Enter the number of rows (from 2 up to 10): ", MAX_LENGTH, MIN_LENGTH, "The number of rows must be in the required range!\n");
 
         allocateArrays(rows, &b, &x, &xp, &a);
         if (a == NULL || b == NULL || x == NULL || xp == NULL) {
