@@ -5,7 +5,7 @@ char validateFormat(char pick){
     return pick != 'r' && pick != 'm';
 }
 char validateE(double e){
-    return e >= 1e-15 && e <= 1e-3;
+    return e >= 1e-15 && e <= 1e-2;
 }
 char validateDouble(double d){
     return d <= 100 && d >= -100;

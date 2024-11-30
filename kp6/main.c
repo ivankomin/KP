@@ -25,7 +25,7 @@ int main(){
             freeArrays(rows, b, x, xp, a);
             return 0;
         }
-        e = validateDoubleInput("Enter e (from 1e-15 to 1e-3): ", validateE, "E must be between 1e-15 and 1e-3!\n");
+        e = validateDoubleInput("Enter e (from 1e-15 to 1e-2): ", validateE, "E must be between 1e-15 and 1e-2!\n");
         pick = validateChars("Enter how you want to fill in the coefficients and free terms ('r' for random or 'm' for manual input): ", validateFormat, "Invalid input!\n");
         
         switch(pick){
