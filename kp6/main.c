@@ -6,6 +6,7 @@
 #define MIN_LENGTH 2
 #define MIN_RANGE -100
 #define MAX_RANGE 100
+
 int main(){
     printf("This program solves SLAE using the coefficients and free terms provided by the user.\n");
     srand(time(NULL));
@@ -28,31 +29,23 @@ int main(){
         pick = validateChars("Enter how you want to fill in the coefficients and free terms ('r' for random or 'm' for manual input): ", validateFormat, "Invalid input!\n");
         
         switch(pick){
-            case 'm': 
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; j < rows; j++) {
-                        printf("Enter a%d%d\n", i + 1, j + 1);
-                        a[i][j] = validateDoubleInput("[-100, 100]: ", validateDouble, "Invalid input!\n");
-                    }
-                    printf("Enter b of the row %d: ", i + 1);
-                    b[i] = validateDoubleInput("[-100, 100]: ", validateDouble, "Invalid input!\n");
-                }
+            case 'm':
+                fillSLaeManually(a, b, rows);
                 break;
-            case 'r':
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; j < rows; j++) {
-                        a[i][j] = generateRandomDouble(MIN_RANGE, MAX_RANGE);
-                    }
-                    b[i] = generateRandomDouble(MIN_RANGE, MAX_RANGE);
-                }
+            case 'r': 
+                generateSlae(a, b, rows, MIN_RANGE, MAX_RANGE);
                 break;
             default:
                 printf("Something went wrong...\n");
                 freeArrays(rows, b, x, xp, a);
                 return 0;
         }
-        printInitSlae(rows, a, b);  
-        printf("Press '0' to quit or any other key to continue: ");
+        printInitSlae(rows, a, b);
+        solveSlae(a, b, x, xp, rows, e);
+        printSolvedCoeffs(rows, x, e);
+        printSolvedSlae(rows, a, b, x);
+
+        printf("\nPress '0' to quit or any other key to continue: ");
         freeArrays(rows, b, x, xp, a);
     }while(getchar() != 48);
 
