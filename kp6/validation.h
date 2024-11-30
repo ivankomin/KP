@@ -8,7 +8,7 @@ char validateE(double e){
     return e >= 1e-15 && e <= 1e-3;
 }
 char validateDouble(double d){
-    return d != 0 && d <= 1e6 && d >= -1e6;
+    return d <= 100 && d >= -100;
 }
 unsigned validateIntInput(const char* prompt,const unsigned MAX_LENGTH, const unsigned MIN_LENGTH, const char* errorMessage){
     char validInput = 0;

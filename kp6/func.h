@@ -25,4 +25,20 @@ void freeArrays(int rows, double *b, double *x, double *xp, double **a) {
     free(a); 
 }
 
+double generateRandomDouble(double min, double max) {
+    return min + (max - min) * (double)rand() / (RAND_MAX + 1.0);
+}
+
+void printInitSlae(unsigned rows, double **a, double *b) {
+    printf("Initial SLAE: \n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < rows; j++) {
+            if(j == 0) {
+                printf(" %.1lf*x%d", a[i][j], j+1);
+            } else {
+                printf(" %+.1lf*x%d", a[i][j], j+1);
+            }
+        }
+    }
+}
 #endif
