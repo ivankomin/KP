@@ -41,8 +41,8 @@ void fillSLaeManually(double **a, double *b, int rows) {
                 if (i == j){
                     do{
                         a[i][j] = validateDoubleInput("Input goes here (NOT 0): ", validateDouble, "Invalid input!\n");
-                        diagonalElement = fabs(a[i][j]);
                     } while(a[i][j] == 0);
+                    diagonalElement = a[i][j];
                 }
                 else{
                     a[i][j] = validateDoubleInput("Input goes here: ", validateDouble, "Invalid input!\n");
@@ -107,13 +107,13 @@ void printInitSlae(unsigned rows, double **a, double *b) {
 }
 
 void printSolvedCoeffs(unsigned rows, double *x, double e) {
-    printf("\nThe solved coefficients: \n\n");
+    printf("\nThe solved x's: \n\n");
     for (int i = 0; i < rows; i++) {
         printf("x%d = %.*lf\n", i+1, (int)fabs(log10(e)), x[i]);
     }
 }
 void printSolvedSlae(unsigned rows, double **a, double *b, double *x) {
-    printf("\nSolved SLAE: \n\n");
+    printf("\nSolved SLAE (the found solutions are slightly rounded here not to make a mess): \n\n");
     for (int i = 0; i < rows; i++){
         for (int j = 0; j < rows; j++){
             if(j == 0) {

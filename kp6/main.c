@@ -40,6 +40,7 @@ int main(){
                 freeArrays(rows, b, x, xp, a);
                 return 0;
         }
+        
         printInitSlae(rows, a, b);
         solveSlae(a, b, x, xp, rows, e);
         printSolvedCoeffs(rows, x, e);
