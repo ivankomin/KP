@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "validation.h"
+#define MAX_ITERATIONS 10000
 
 void allocateArrays(unsigned rows, double **b, double **x, double **xp, double ***a) {
     *b = (double *)calloc(rows, sizeof(double));
@@ -74,6 +75,7 @@ void generateSlae(double **a, double *b, int rows, double min, double max) {
 
 void solveSlae(double **a, double *b, double *x, double *xp, int rows, double e) {
     double sum = 0, maxDelta = 0;
+    int iters = 0;
     do{
         maxDelta = 0;
         for (int i = 0; i < rows; i++) {
@@ -89,7 +91,8 @@ void solveSlae(double **a, double *b, double *x, double *xp, int rows, double e)
         for (int i = 0; i < rows; i++) {
             xp[i] = x[i];
         }
-    } while(maxDelta > e);
+        iters++;
+    } while(maxDelta > e && iters < MAX_ITERATIONS);
 }
 
 void printInitSlae(unsigned rows, double **a, double *b) {
