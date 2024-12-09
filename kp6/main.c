@@ -6,6 +6,7 @@
 #define MIN_LENGTH 2
 #define MIN_RANGE -100
 #define MAX_RANGE 100
+#define MAX_ITERATIONS 10000
 
 int main(){
     printf("This program solves SLAE using the coefficients and free terms provided by the user.\n");
@@ -42,7 +43,7 @@ int main(){
         }
         
         printInitSlae(rows, a, b);
-        solveSlae(a, b, x, xp, rows, e);
+        solveSlae(a, b, x, xp, rows, e, MAX_ITERATIONS);
         printSolvedCoeffs(rows, x, e);
         printSolvedSlae(rows, a, b, x);
 

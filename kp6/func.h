@@ -72,8 +72,9 @@ void generateSlae(double **a, double *b, int rows, double min, double max) {
     }
 }
 
-void solveSlae(double **a, double *b, double *x, double *xp, int rows, double e) {
+void solveSlae(double **a, double *b, double *x, double *xp, int rows, double e, int maxIters) {
     double sum = 0, maxDelta = 0;
+    int iters = 0;
     do{
         maxDelta = 0;
         for (int i = 0; i < rows; i++) {
@@ -89,7 +90,8 @@ void solveSlae(double **a, double *b, double *x, double *xp, int rows, double e)
         for (int i = 0; i < rows; i++) {
             xp[i] = x[i];
         }
-    } while(maxDelta > e);
+        iters++;
+    } while(maxDelta > e && iters < maxIters);
 }
 
 void printInitSlae(unsigned rows, double **a, double *b) {
