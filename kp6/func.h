@@ -78,7 +78,7 @@ void solveSlae(double **a, double *b, double *x, double *xp, int rows, double e,
     do{
         maxDelta = 0;
         for (int i = 0; i < rows; i++) {
-            sum = 0;
+            sum = 0;//in loop
             for (int j = 0; j < rows; j++) {
                 if (i != j) {
                     sum += a[i][j] * xp[j];
@@ -91,7 +91,14 @@ void solveSlae(double **a, double *b, double *x, double *xp, int rows, double e,
             xp[i] = x[i];
         }
         iters++;
-    } while(maxDelta > e && iters < maxIters);
+    } while(maxDelta > e && iters <= maxIters);
+    
+    if (iters == maxIters) {
+        printf("\nThe method didn't converge within %d iterations\n", maxIters);
+    }
+    else {
+        printf("\nSolved in %d iterations\n", iters);
+    }
 }
 
 void printInitSlae(unsigned rows, double **a, double *b) {
@@ -99,12 +106,12 @@ void printInitSlae(unsigned rows, double **a, double *b) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < rows; j++) {
             if(j == 0) {
-                printf(" %.2lf*x%d", a[i][j], j+1);
+                printf(" %lf*x%d", a[i][j], j+1);
             } else {
-                printf(" %+.2lf*x%d", a[i][j], j+1);
+                printf(" %+lf*x%d", a[i][j], j+1);
             }
         }
-        printf(" = %.2lf\n", b[i]);
+        printf(" = %lf\n", b[i]);
     }
 }
 
@@ -115,7 +122,7 @@ void printSolvedCoeffs(unsigned rows, double *x, double e) {
     }
 }
 void printSolvedSlae(unsigned rows, double **a, double *b, double *x) {
-    printf("\nSolved SLAE (the found solutions are slightly rounded here not to make a mess): \n\n");
+    printf("\nSolved SLAE (the coefficients and found solutions are slightly rounded here not to make a mess): \n\n");
     for (int i = 0; i < rows; i++){
         for (int j = 0; j < rows; j++){
             if(j == 0) {
@@ -124,7 +131,7 @@ void printSolvedSlae(unsigned rows, double **a, double *b, double *x) {
                 printf(" %+.2lf*%.2lf", a[i][j], x[j]);
             }
         }
-        printf(" = %.2lf\n", b[i]);
+        printf(" = %lf\n", b[i]);
     }
 }
 #endif

@@ -12,18 +12,17 @@ int main() {
 
         pick = validateChars("Enter your choice: ", validateCalcChoice, "Invalid input!\n");
 
+        a = validateDoubleInput("Enter a: ", pick == '1' ? equalToZero : greaterThanZero, 
+                                             pick == '1' ? "a cannot be equal to 0!\n" : "a must be greater than 0!\n");
+        b = validateDoubleInput("Enter b: ", pick == '1' ? equalToZero : greaterThanZero, 
+                                             pick == '1' ? "b cannot be equal to 0!\n" : "b must be greater than 0!\n");
+        y = validateDoubleInput("Enter y: ", anythingGoes, "");
+        e = validateDoubleInput("Enter e: ", validateE, "E must be between 1e-15 and 1e-2!\n");
+
         switch (pick) {
-            case '1':
-                a = validateDoubleInput("Enter a: ", equalToZero, "a cannot be equal to 0!\n");
-                b = validateDoubleInput("Enter b: ", equalToZero, "b cannot be equal to 0!\n");
-                y = validateDoubleInput("Enter y: ", anythingGoes, "");
-                e = validateDoubleInput("Enter e: ", validateE, "E must be between 1e-15 and 1e-2!\n");
+            case '1':    
                 break;
             case '2':
-                a = validateDoubleInput("Enter a: ", greaterThanZero, "a has to be greater than 0!\n");
-                b = validateDoubleInput("Enter b: ", greaterThanZero, "b has to be greater than 0!\n");
-                y = validateDoubleInput("Enter y: ", anythingGoes, "");
-                e = validateDoubleInput("Enter e: ", validateE, "E must be between 1e-15 and 1e-2!\n");
                 break;
             default:
                 printf("Something went wrong...\n");
