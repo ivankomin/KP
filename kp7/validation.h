@@ -1,6 +1,7 @@
 #ifndef VALIDATION_H
 #define VALIDATION_H
 #include <stdio.h>
+
 char equalToZero(double val){
     return val != 0;
 }
