@@ -73,12 +73,12 @@ void generateSlae(double **a, double *b, int rows, double min, double max) {
 }
 
 void solveSlae(double **a, double *b, double *x, double *xp, int rows, double e, int maxIters) {
-    double sum = 0, maxDelta = 0;
+    double maxDelta = 0;
     int iters = 0;
     do{
         maxDelta = 0;
         for (int i = 0; i < rows; i++) {
-            sum = 0;//in loop
+            double sum = 0;
             for (int j = 0; j < rows; j++) {
                 if (i != j) {
                     sum += a[i][j] * xp[j];
