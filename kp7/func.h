@@ -38,7 +38,7 @@ double solveNewton(double (*func)(double, double), double y, double a, double b,
     double x = b;
     int iters = 0; 
     do {
-        derivative = (func(x + a, y) - func(x, y)) / a;
+        derivative = (func(x + e, y) - func(x, y)) / e;
         delta = func(x, y) / derivative;
         x -= delta;
         if (x < a || x > b) {
