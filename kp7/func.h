@@ -31,19 +31,16 @@ double solveBisection(double (*func)(double, double), double y, double a, double
 }
 
 double solveNewton(double (*func)(double, double), double y, double a, double b, double e, int maxIters) {
-    if (func(a, y) * func(b, y) > 0) {
+    if ((*func)(a, y) * (*func)(b, y) > 0) {
         return 0;
     }
     double delta = 0, derivative = 0;
-    double x = b;
+    double x = func(b, y);
     int iters = 0; 
     do {
-        derivative = (func(x + e, y) - func(x, y)) / e;
+        derivative = (func(x + a, y) - func(x, y)) / a;
         delta = func(x, y) / derivative;
         x -= delta;
-        if (x < a || x > b) {
-            return 0;
-        }
         iters++;
     } while (fabs(delta) >= e && iters <= maxIters);
 

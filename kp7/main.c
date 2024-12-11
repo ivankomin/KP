@@ -55,7 +55,7 @@ int main() {
                 printf("Something went wrong...\n");
                 break;
         }
-        if (x == 0 || x < a || x > b) {
+        if (x == 0) {
             printf("No solutions were found on the interval [%lf, %lf]\n", a, b);
         }
         else {
