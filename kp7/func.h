@@ -30,26 +30,36 @@ double solveBisection(double (*func)(double, double), double y, double a, double
     }
 }
 
-double solveNewton(double (*func)(double, double), double y, double a, double b, double e, int maxIters) {
-    if ((*func)(a, y) * (*func)(b, y) > 0) {
-        return 0;
-    }
-    double delta = 0, derivative = 0;
-    double x = func(b, y);
-    int iters = 0; 
-    do {
-        derivative = (func(x + a, y) - func(x, y)) / a;
-        delta = func(x, y) / derivative;
-        x -= delta;
-        iters++;
-    } while (fabs(delta) >= e && iters <= maxIters);
+double solveNewton(double (*function)(double, double), double y, double a, double b, double e, double reallySmallNumber, double minDerivative, int maxIters) {
+    double delta = 0;
+    double derivative = 0;
+    int iters = 0;
 
-    if (iters == maxIters) {
-        printf("Newton method didn't converge within the maximum number of iterations.\n");
-        return 0;
-    } 
-    else {
-        printf("Solved in %d iterations\n", iters);
-        return x;
-    }
+    double x = (a + b) / 2.0;
+
+    do {
+        double fx = function(x, y);
+        if (isnan(fx))
+        {
+            printf("Function is undefined at x = %lf. Skipping...\n", x);
+            return 0;
+        }
+        derivative = (function(x + reallySmallNumber, y) - fx) / reallySmallNumber;
+
+        if (fabs(derivative) < minDerivative) {
+            printf("Derivative too small at x = %lf. The method may not converge.\n", x);
+            return 0;
+        }
+        delta = fx / derivative;
+        x -= delta;
+
+        iters++;
+        if (iters > maxIters) {
+            printf("Maximum iterations reached. The method may not converge.\n");
+            return 0;
+        }
+    } while (fabs(delta) > e);
+
+    return x;
 }
+

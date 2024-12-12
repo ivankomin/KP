@@ -2,6 +2,10 @@
 #include "validation.h"
 #include "func.h"
 #define MAX_ITERS 10000
+#define EPSILON 1e-6
+#define MIN_DERIVATIVE 1e-15
+#define STEP 0.001
+#define MAX_ROOTS 100
 int main() {
     printf("This program solves non linear equations on the interval [a, b].\n");
     do {
@@ -44,22 +48,32 @@ int main() {
 
         pick = validateChars("Enter how you want to solve the equation ('1' for bisection or '2' for Newton): ", validateCalcChoice, "Invalid input!\n");
 
-        switch(pick) {
-            case '1':
-                x = solveBisection(chosenFunc, y, a, b, e, MAX_ITERS);
-                break;
-            case '2':
-                x = solveNewton(chosenFunc, y, a, b, e, MAX_ITERS);
-                break;
-            default:
-                printf("Something went wrong...\n");
-                break;
+        int rootsFound = 0;
+        double roots[MAX_ROOTS] = {0};
+        while (a < b && rootsFound < MAX_ROOTS) {
+            double end = fmin(a + STEP, b);
+            double fStart = chosenFunc(a, y);
+            double fEnd = chosenFunc(end, y);
+            if (fStart * fEnd < 0) {
+                switch(pick) {
+                    case '1':
+                        x = solveBisection(chosenFunc, y, a, end, e, MAX_ITERS);
+                        break;
+                    case '2':
+                        x = solveNewton(chosenFunc, y, a, end, e, EPSILON, MIN_DERIVATIVE, MAX_ITERS);
+                        break;
+                    default:
+                        printf("Something went wrong...\n");
+                        break;
+                }
+                roots[rootsFound] = x;
+                rootsFound++;
+                printf("Root found at x = %.*lf\n", (int)fabs(log10(e)), x);
+            }
+            a = end;
         }
-        if (x == 0) {
+        if (rootsFound == 0) {
             printf("No solutions were found on the interval [%lf, %lf]\n", a, b);
-        }
-        else {
-        printf("Result: x = %.*lf\n", (int)fabs(log10(e)), x);
         }
         printf("Press '0' to quit or any other key to continue: ");
     } while (getchar() != 48);
