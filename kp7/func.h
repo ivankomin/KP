@@ -16,7 +16,10 @@ double solveBisection(double (*func)(double, double), double y, double a, double
     int iters = 0;
     do{
         x = (a + b) / 2.0;
-        ((*func)(x, y) * (*func)(a, y) > 0) ? (a = x) : (b = x);
+        if (isnan(func(x, y))){
+            return 0;
+        }
+        func(x, y) * func(a, y) > 0 ? (a = x) : (b = x);
         iters++;
         if (iters == maxIters) {
             printf("Bisection method didn't converge within the maximum number of iterations.\n");
@@ -26,20 +29,20 @@ double solveBisection(double (*func)(double, double), double y, double a, double
     return x;
 }
 
-double solveNewton(double (*function)(double, double), double y, double a, double b, double e, double reallySmallNumber, double minDerivative, int maxIters) {
+double solveNewton(double (*func)(double, double), double y, double a, double b, double e, double reallySmallNumber, double minDerivative, int maxIters) {
     double delta = 0;
     double derivative = 0;
     int iters = 0;
     double x = (a + b) / 2.0;
     do {
-        if (isnan(function(x, y))){
+        if (isnan(func(x, y))){
             return 0;
         }
-        derivative = (function(x + reallySmallNumber, y) - function(x, y)) / reallySmallNumber;
+        derivative = (func(x + reallySmallNumber, y) - func(x, y)) / reallySmallNumber;
         if (fabs(derivative) < minDerivative) {
             return 0;
         }
-        delta = function(x, y) / derivative;
+        delta = func(x, y) / derivative;
         x -= delta;
         iters++;
         if (iters == maxIters) {
