@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "validation.h"
 #include "func.h"
 #define MAX_ITERS 10000
@@ -6,11 +7,14 @@
 #define MIN_DERIVATIVE 1e-15
 #define STEP 0.001
 #define MAX_ROOTS 100
+
 int main() {
     printf("This program solves non linear equations on the interval [a, b].\n");
     do {
         double a = 0, b = 0, e = 0, y = 0, x = 0;
         char pick = 0;
+        int rootsFound = 0;
+        double roots[MAX_ROOTS] = {0};
         double (*chosenFunc)(double, double);
         char (*chosenCondition)(double);
         char *errorMessage = "";
@@ -47,15 +51,17 @@ int main() {
         e = validateDoubleInput("Enter e: ", validateE, "E must be between 1e-15 and 1e-2!\n");
 
         pick = validateChars("Enter how you want to solve the equation ('1' for bisection or '2' for Newton): ", validateCalcChoice, "Invalid input!\n");
-
-        int rootsFound = 0;
-        double roots[MAX_ROOTS] = {0};
+    
         while (a < b && rootsFound < MAX_ROOTS) {
             double end = fmin(a + STEP, b);
-            double fStart = chosenFunc(a, y);
-            double fEnd = chosenFunc(end, y);
-            if (fStart * fEnd < 0) {
-                switch(pick) {
+            double funcStart = chosenFunc(a, y);
+            double funcEnd = chosenFunc(end, y);
+            if (isAsymptote(funcStart, funcEnd)) {
+                a = end;
+                continue;
+            }
+            if (funcStart * funcEnd < 0) {
+                switch (pick) {
                     case '1':
                         x = solveBisection(chosenFunc, y, a, end, e, MAX_ITERS);
                         break;
@@ -66,14 +72,23 @@ int main() {
                         printf("Something went wrong...\n");
                         break;
                 }
-                roots[rootsFound] = x;
-                rootsFound++;
-                printf("Root found at x = %.*lf\n", (int)fabs(log10(e)), x);
+
+                if (isUniqueRoot(roots, rootsFound, x)) {
+                    roots[rootsFound] = x;
+                    rootsFound++;
+                }
             }
-            a = end;
+            a = end;  
         }
+
         if (rootsFound == 0) {
             printf("No solutions were found on the interval [%lf, %lf]\n", a, b);
+        } 
+        else {
+            printf("Found %d unique roots on the interval [%lf, %lf]:\n", rootsFound, a, b);
+            for (int i = 0; i < rootsFound; i++) {
+                printf("x%d = %lf\n", i + 1, roots[i]);
+            }
         }
         printf("Press '0' to quit or any other key to continue: ");
     } while (getchar() != 48);

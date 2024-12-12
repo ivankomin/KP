@@ -1,7 +1,8 @@
 #ifndef VALIDATION_H
 #define VALIDATION_H
 #include <stdio.h>
-
+#define UNIQUE_TOLERANCE 1e-6
+#define ASYMPTOTE_THRESHOLD 1e6
 char equalToZero(double val){
     return val != 0;
 }
@@ -45,5 +46,18 @@ char validateChars(const char* prompt, char (*cond)(char), const char* errorMess
         }
     }while (cond(pick));
     return pick;
+}
+
+char isAsymptote(double funcStart, double funcEnd) {
+    return fabs(funcStart) > ASYMPTOTE_THRESHOLD || fabs(funcEnd) > ASYMPTOTE_THRESHOLD || fabs(funcStart - funcEnd) > ASYMPTOTE_THRESHOLD;
+}
+
+char isUniqueRoot(double roots[], int rootsFound, double newRoot) {
+    for (int i = 0; i < rootsFound; i++) {
+        if (fabs(roots[i] - newRoot) < UNIQUE_TOLERANCE) {
+            return 0;
+        }
+    }
+    return 1;
 }
 #endif
