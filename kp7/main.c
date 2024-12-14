@@ -51,7 +51,7 @@ int main() {
         e = validateDoubleInput("Enter e: ", validateE, "E must be between 1e-15 and 1e-2!\n");
 
         pick = validateChars("Enter how you want to solve the equation ('1' for bisection or '2' for Newton): ", validateCalcChoice, "Invalid input!\n");
-    
+        double initA = a;
         while (a < b && rootsFound < MAX_ROOTS) {
             double end = fmin(a + STEP, b);
             double funcStart = chosenFunc(a, y);
@@ -82,12 +82,12 @@ int main() {
         }
 
         if (rootsFound == 0) {
-            printf("No solutions were found on the interval [%lf, %lf]\n", a, b);
+            printf("No solutions were found on the interval [%lf, %lf]\n", initA, b);
         } 
         else {
-            printf("Found %d unique roots on the interval [%lf, %lf]:\n", rootsFound, a, b);
+            printf("Found %d unique roots on the interval [%lf, %lf]:\n", rootsFound, initA, b);
             for (int i = 0; i < rootsFound; i++) {
-                printf("x%d = %lf\n", i + 1, roots[i]);
+                printf("x%d = %.*lf\n",i + 1, (int)fabs(log10(e)), roots[i]);
             }
         }
         printf("Press '0' to quit or any other key to continue: ");
