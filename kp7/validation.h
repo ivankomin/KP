@@ -4,13 +4,13 @@
 #define UNIQUE_TOLERANCE 1e-6
 #define ASYMPTOTE_THRESHOLD 1e6
 char equalToZero(double val){
-    return val != 0;
+    return val != 0.0;
 }
 char greaterThanZero(double val){
-    return val > 0;
+    return val > 0.0;
 }
-char anythingGoes(double val){
-    return 1;
+char yInRange(double val){
+    return val <= 1000.0 && val >= -1000.0;
 }
 char validateE(double val){
     return val >= 1e-15 && val <= 1e-2;

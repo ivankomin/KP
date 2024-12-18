@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <math.h>
 #include "validation.h"
-double findX1(double x, double y){
+double findXinCosEq(double x, double y){
     return (cos(y/x)-2.0*sin(1.0/x)+1.0/x);
 }
 
-double findX2(double x, double y){
+double findXinLogEq(double x, double y){
     return (sin(log(x)) - cos(log(x)) + y * log(x));
 }
 
@@ -17,15 +17,16 @@ double solveBisection(double (*func)(double, double), double y, double a, double
     do{
         x = (a + b) / 2.0;
         if (isnan(func(x, y))){
-            return 0;
+            return 0.0;
         }
-        func(x, y) * func(a, y) > 0 ? (a = x) : (b = x);
+        func(x, y) * func(a, y) > 0.0 ? (a = x) : (b = x);
         iters++;
         if (iters == maxIters) {
             printf("Bisection method didn't converge within the maximum number of iterations.\n");
-            return 0;
+            return 0.0;
         }
     } while (fabs(b - a) >= e && iters <= maxIters);
+    printf("Solved in %d iterations\n", iters);
     return x;
 }
 
@@ -36,20 +37,21 @@ double solveNewton(double (*func)(double, double), double y, double a, double b,
     double x = (a + b) / 2.0;
     do {
         if (isnan(func(x, y))){
-            return 0;
+            return 0.0;
         }
         derivative = (func(x + reallySmallNumber, y) - func(x, y)) / reallySmallNumber;
         if (fabs(derivative) < minDerivative) {
-            return 0;
+            return 0.0;
         }
         delta = func(x, y) / derivative;
         x -= delta;
         iters++;
         if (iters == maxIters) {
             printf("Newton method didn't converge within the maximum number of iterations.\n");
-            return 0;
+            return 0.0;
         }
     } while (fabs(delta) >= e && iters <= maxIters);
+    printf("Solved in %d iterations\n", iters);
     return x;
 }
 

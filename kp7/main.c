@@ -29,13 +29,13 @@ int main() {
             case '1':
                 printf("The chosen equation is: cos(y/x) - 2sin(1/x) + 1/x = 0\n");
                 chosenCondition = equalToZero;
-                chosenFunc = findX1;
+                chosenFunc = findXinCosEq;
                 errorMessage = "a or b cannot be equal to 0!\n";
                 break;
             case '2':
                 printf("The chosen equation is: sin(ln(x)) - cos(ln(x)) + y * ln(x) = 0\n");
                 chosenCondition = greaterThanZero;
-                chosenFunc = findX2;
+                chosenFunc = findXinLogEq;
                 errorMessage = "a or b must be greater than 0!\n";
                 break;
             default:
@@ -47,7 +47,7 @@ int main() {
         do{
             b = validateDoubleInput("Enter b (>a): ", chosenCondition, errorMessage);
         } while (b <= a);
-        y = validateDoubleInput("Enter y: ", anythingGoes, "");
+        y = validateDoubleInput("Enter y (-1000 <= y <= 1000): ", yInRange, "Y has to be in the required range!\n");
         e = validateDoubleInput("Enter e: ", validateE, "E must be between 1e-15 and 1e-2!\n");
 
         pick = validateChars("Enter how you want to solve the equation ('1' for bisection or '2' for Newton): ", validateCalcChoice, "Invalid input!\n");
@@ -73,7 +73,7 @@ int main() {
                         break;
                 }
 
-                if (isUniqueRoot(roots, rootsFound, x)) {
+                if (isUniqueRoot(roots, rootsFound, x) && x != 0) {
                     roots[rootsFound] = x;
                     rootsFound++;
                 }
