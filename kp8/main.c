@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include "func.h"
 #include "validation.h"
-#define KEYCODE_TO_EXIT 48
+#define ZERO_TO_EXIT 48
 #define MAX_VALUE 1e3
 #define MIN_VALUE 1e-3
 
 int main(){
-    printf("This program calculates complex resistance of the circuit.\n");
+    printf("This program calculates complex resistance of a chosen circuit.\n");
     do {
         char choice = 0;
         double r1 = 0.0, r2 = 0.0, c = 0.0, l = 0.0;
@@ -43,6 +43,9 @@ int main(){
         fmin = validateDoubleInput("Enter fmin (Hz)", isPositive, MIN_VALUE, MAX_VALUE,"fmin has to be greater than 0 and in the required range!\n");
         do {
             fmax = validateDoubleInput("Enter fmax (Hz)", isPositive, MIN_VALUE, MAX_VALUE, "fmax has to be greater than 0 and in the required range!\n");
+            if (fmax < fmin) {
+                printf("fmax has to be greater than fmin!\n");
+            }
         } while (fmax < fmin);
         df = validateDoubleInput("Enter step", isPositive, MIN_VALUE, MAX_VALUE, "Step has to be greater than 0 and in the required range!\n");
 
@@ -90,7 +93,7 @@ int main(){
         } while (f <= fmax);
 
         printf("Press '0' to exit or any other key to continue: ");
-    } while (getchar() != KEYCODE_TO_EXIT);
+    } while (getchar() != ZERO_TO_EXIT);
 
     return 0;
 }
