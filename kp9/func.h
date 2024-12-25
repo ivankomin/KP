@@ -2,9 +2,10 @@
 #define FUNC_H
 #include <stdio.h>
 #include "validation.h"
+
 FILE *file;
 typedef struct{
-    char region[40];
+    char* region;
     double area;
     double population;
 } Record;
@@ -43,7 +44,6 @@ void readFile(char* fileName) {
         printf("Error opening file!\n");
         return;
     }
-    //TODO make it so it actually prints out something meaningful
     char line[256]; 
     while (fgets(line, sizeof(line), file)) {
         printf("%s", line);
@@ -66,14 +66,12 @@ void createRecord(char *fileName) {
         printf("Error opening file!\n");
         return;
     }
-    printf("Enter the region: ");
-    scanf("%s", record.region);
-    printf("Enter the area: ");
-    scanf("%lf", &record.area);
-    printf("Enter the population: ");
-    scanf("%lf", &record.population);
-    fprintf(file, "Region: %s\nArea: %lf\nPopulation: %lf\n", record.region, record.area, record.population);
+    static unsigned recordNumber = 1;
+    record.region = validateStringInput("Enter region: ",isAlphabetic, "Region contains forbidden characters!\n");
+    record.area = validateDoubleInput("Enter area: ",isPositive, "Area must be positive!\n");
+    record.population = validateDoubleInput("Enter population: ",isPositive, "Population must be positive!\n");
+    
+    fprintf(file, "%d)\nRegion: %s\nArea: %lf\nPopulation: %lf\n-----------\n", recordNumber++,record.region, record.area, record.population);
     fclose(file);
-
 }
 #endif

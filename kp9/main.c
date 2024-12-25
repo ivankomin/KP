@@ -23,8 +23,7 @@ int main(){
                 break;
             case 3:
                 fileName = getExistingFileName();
-                createRecord(fileName); 
-                break;
+                createRecord(fileName);
             case 4:
                 printf("option 4\n"); 
                 break;
