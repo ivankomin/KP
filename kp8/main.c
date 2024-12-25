@@ -34,7 +34,7 @@ int main(){
                 r1Prompt = "Enter R1: ";
                 break;
             default:
-                printf("'Where did we go so wrong?' - Heavy from Team Fortress 2\n");
+                printf("Where did we go so wrong?\n");
                 break;
         }
 
@@ -77,7 +77,7 @@ int main(){
                     calculateCircuit4(&numerator, &denominator, &result, r1, r2, l, c, omega);
                     break;
                 default:
-                    printf("'I told you not to touch that thing!' - Engineer from Team Fortress 2\n");
+                    printf("I told you not to touch that thing!\n");
                     break;
             }
             printf("f = %lf Hz | Z = %e %+ e*i\n", f, result.real, result.imaginary);

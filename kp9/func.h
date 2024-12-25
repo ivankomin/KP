@@ -71,7 +71,41 @@ void createRecord(char *fileName) {
     record.area = validateDoubleInput("Enter area: ",isPositive, "Area must be positive!\n");
     record.population = validateDoubleInput("Enter population: ",isPositive, "Population must be positive!\n");
     
-    fprintf(file, "%d)\nRegion: %s\nArea: %lf\nPopulation: %lf\n-----------\n", recordNumber++,record.region, record.area, record.population);
+    fprintf(file, "%d)\nRegion: %s\nArea: %lf\nPopulation: %lf\n---\n", recordNumber++,record.region, record.area, record.population);
+    fclose(file);
+}
+
+void readRecord(const char* fileName, int recordNumber) {
+    file = fopen(fileName, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    char line[256];
+    int currentRecord = 0;
+    char isTargetRecord = 0;
+
+    while (fgets(line, sizeof(line), file)) {
+        // Check if this is the target record
+        if (sscanf(line, "%d)", &currentRecord) == 1 && currentRecord == recordNumber) {
+            isTargetRecord = 1;
+            printf("Record %d:\n", recordNumber);
+        } else if (strncmp(line, "---", 3) == 0) {
+            // End of current record
+            isTargetRecord = 0;
+        }
+
+        // Print the lines of the target record
+        if (isTargetRecord && strncmp(line, "---", 3) != 0) {
+            printf("%s", line);
+        }
+    }
+
+    if (!isTargetRecord) {
+        printf("Record %d not found.\n", recordNumber);
+    }
+
     fclose(file);
 }
 #endif

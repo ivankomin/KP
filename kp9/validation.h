@@ -94,7 +94,7 @@ char* validateStringInput(const char* prompt, char (*cond)(char*), const char* e
 
 //------------------FILES------------------
 
-char* validateFileName() {
+char* validateFileName(char (*cond)(char*), const char* errorMessage) {
     char validInput = 0;
     static char fileName[MAX_NAME_LENGTH]; 
     do {
@@ -107,6 +107,10 @@ char* validateFileName() {
         }
         else if (tooLong(fileName)) {
             printf("File name is too long!\n");
+            validInput = 0;
+        }
+        else if (!cond(fileName)) {
+            printf("%s", errorMessage);
             validInput = 0;
         }
     } while (!validInput);
@@ -123,24 +127,12 @@ char fileAlreadyExists(const char* fileName) {
     return 1;
 }
 
-char* getNewFileName() {
-    char* fileName;
-    do{
-        fileName = validateFileName();
-        if (fileAlreadyExists(fileName)) {
-            printf("File already exists!\n");
-        }
-    } while (fileAlreadyExists(fileName));
-    return fileName;
+char getNewFileName(char* fileName) {
+    return (!fileAlreadyExists(fileName));
 }
-char* getExistingFileName() {
-    char* fileName;
-    do{
-        fileName = validateFileName();
-        if (!fileAlreadyExists(fileName)) {
-            printf("File does not exist!\n");
-        }
-    } while (!fileAlreadyExists(fileName));
-    return fileName;
+
+char getExistingFileName(char* fileName) {
+    return (fileAlreadyExists(fileName));
 }
+
 #endif

@@ -1,7 +1,19 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "func.h"
 #include "validation.h"
 int main(){
+    if (chdir("C:/Users/ivank/projects/KP/kp9") != 0) {
+        perror("chdir() failed");
+        return 1;
+    }
+
+    char cwd[256];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Forced Working Directory: %s\n", cwd);
+    } else {
+        perror("getcwd() error");
+    }
     printf("This is a file manager program\n");
     unsigned option = 0;
     char* fileName; 
@@ -10,22 +22,25 @@ int main(){
         option = validateOption("Enter your option: ",optionInRange, "Invalid input!\n");
         switch (option) {
             case 0:
-                fileName = getNewFileName();
+                fileName = validateFileName(getNewFileName, "File already exists!\n");
                 createFile(fileName); 
                 break;
             case 1:
-                fileName = getExistingFileName();
+                fileName = validateFileName(getExistingFileName, "File does not exist!\n");
                 readFile(fileName); 
                 break;
             case 2:
-                fileName = getExistingFileName();
+                fileName = validateFileName(getExistingFileName, "File does not exist!\n");
                 deleteFile(fileName);
                 break;
             case 3:
-                fileName = getExistingFileName();
+                fileName = validateFileName(getExistingFileName, "File does not exist!\n");
                 createRecord(fileName);
+                break;
             case 4:
-                printf("option 4\n"); 
+                fileName = validateFileName(getExistingFileName, "File does not exist!\n");
+                unsigned recordNumber = validateOption("Enter record number: ", optionInRange, "Invalid input!\n");
+                readRecord(fileName, recordNumber); 
                 break;
             case 5:
                 printf("option 5\n"); 
