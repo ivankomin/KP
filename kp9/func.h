@@ -2,16 +2,21 @@
 #define FUNC_H
 #include <stdio.h>
 #include "validation.h"
+#include <unistd.h>
+#define MAX_REGION_LENGTH 3
+#define MAX_BUFFER_SIZE 256
 
+char line[MAX_BUFFER_SIZE];
 FILE *file;
 typedef struct{
-    char* region;
+    char region[MAX_REGION_LENGTH];
     double area;
     double population;
 } Record;
 Record record;
+
 void printMenu(){
-    printf("Menu:\n"
+    printf("\nMenu:\n"
            "File mode:\n"
            "  0 - create file\n"
            "  1 - read file\n"
@@ -25,8 +30,7 @@ void printMenu(){
            "  7 - paste record\n"
            "  8 - delete record\n"
            "\n"
-           "  9 - Exit the program\n"
-           "  10 - inspect FileHeader\n");
+           "  9 - Exit the program\n\n");
 }
 
 void createFile(char* fileName) {
@@ -38,19 +42,32 @@ void createFile(char* fileName) {
     fclose(file);
     printf("File created successfully!\n");
 }
-void readFile(char* fileName) {
+
+//some of the most dogshit code ive ever written starts somewhere round here :)
+void readFile(const char* fileName) {
     file = fopen(fileName, "r");
     if (file == NULL) {
         printf("Error opening file!\n");
         return;
     }
-    char line[256]; 
-    while (fgets(line, sizeof(line), file)) {
-        printf("%s", line);
-    }
+
+    int recordNumber = 1;
+    printf("File contents:\n");
+
+    while (fgets(line, sizeof(line), file)){
+        if (sscanf(line, "%2[^,],%lf,%lf", record.region, &record.area, &record.population) == 3) {
+            printf("%d)\n", recordNumber++);
+            printf("Region: %s\n", record.region);
+            printf("Area: %.2lf\n", record.area);
+            printf("Population: %.2lf\n", record.population);
+            printf("---\n");
+        } else {
+            printf("Error: Could not parse line: %s", line);
+        }
+    } 
     fclose(file);
-    printf("File opened successfully!\n");
 }
+
 void deleteFile(char* fileName) {
     if (remove(fileName) == 0) {
         printf("File deleted successfully!\n");
@@ -60,52 +77,62 @@ void deleteFile(char* fileName) {
     }
 }
 
-void createRecord(char *fileName) {
-    file = fopen(fileName, "a");
+void writeRecord(const char* fileName) {
+    file = fopen(fileName, "a"); 
     if (file == NULL) {
-        printf("Error opening file!\n");
+        printf("Error opening file");
         return;
     }
-    static unsigned recordNumber = 1;
-    record.region = validateStringInput("Enter region: ",isAlphabetic, "Region contains forbidden characters!\n");
+    char* input = validateStringInput("Enter region: ", isAlphabetic, "Region contains forbidden characters!\n");
+    snprintf(record.region, MAX_REGION_LENGTH, "%s", input);
     record.area = validateDoubleInput("Enter area: ",isPositive, "Area must be positive!\n");
     record.population = validateDoubleInput("Enter population: ",isPositive, "Population must be positive!\n");
-    
-    fprintf(file, "%d)\nRegion: %s\nArea: %lf\nPopulation: %lf\n---\n", recordNumber++,record.region, record.area, record.population);
+
+    fprintf(file, "%s,%.2lf,%.2lf\n", record.region, record.area, record.population);
     fclose(file);
+    printf("Record saved successfully.\n");
 }
 
 void readRecord(const char* fileName, int recordNumber) {
     file = fopen(fileName, "r");
     if (file == NULL) {
-        perror("Error opening file");
+        printf("Error opening file");
         return;
     }
-
-    char line[256];
     int currentRecord = 0;
-    char isTargetRecord = 0;
+    do{
+        if (currentRecord == recordNumber) {
+            if (sscanf(line, "%2[^,],%lf,%lf",record.region, &record.area, &record.population) == 3) {
+                printf("Record %d:\n", recordNumber);
+                printf("Region: %s\n", record.region);
+                printf("Area: %.2lf\n", record.area);
+                printf("Population: %.2lf\n", record.population);
+            } else {
+                printf("Error: Unable to parse record %d.\n", recordNumber);
+            }
 
-    while (fgets(line, sizeof(line), file)) {
-        // Check if this is the target record
-        if (sscanf(line, "%d)", &currentRecord) == 1 && currentRecord == recordNumber) {
-            isTargetRecord = 1;
-            printf("Record %d:\n", recordNumber);
-        } else if (strncmp(line, "---", 3) == 0) {
-            // End of current record
-            isTargetRecord = 0;
+            fclose(file);
+            return;
         }
+        currentRecord++;
+    } while (fgets(line, sizeof(line), file));
 
-        // Print the lines of the target record
-        if (isTargetRecord && strncmp(line, "---", 3) != 0) {
-            printf("%s", line);
-        }
-    }
-
-    if (!isTargetRecord) {
-        printf("Record %d not found.\n", recordNumber);
-    }
-
+    printf("Record %d not found.\n", recordNumber);
     fclose(file);
+}
+
+//and ends approximately here
+
+void forceWorkDir(){
+    if (chdir("C:/Users/ivank/projects/KP/kp9") != 0) {
+        perror("chdir() failed"); 
+        return;
+    }
+    char cwd[256];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Forced Working Directory: %s\n", cwd);
+    } else {
+        perror("getcwd() error");
+    }
 }
 #endif

@@ -18,8 +18,8 @@ char containsForbiddenChars(const char* str) {
 char isPositive(double num) {
     return num > 0.0;
 }
-char optionInRange(unsigned option) {
-    return option >= 0 && option <= 10;
+char optionInRange(char option) {
+    return option >= '0' && option <= '9';
 }
 char isAlphabetic(char *str) {
     if (strlen(str) == 0) {
@@ -37,7 +37,20 @@ char isAlphabetic(char *str) {
 
 //------------------INPUT------------------
 
-char validateOption(const char* prompt, char (*cond)(unsigned), const char* errorMessage) {
+char validateChars(const char* prompt, char (*cond)(char), const char* errorMessage){
+    char pick = 0;
+    do{
+        printf("%s", prompt);
+        pick = getchar();
+        while (getchar() != '\n');
+        if (!cond(pick)){
+            printf("%s", errorMessage);
+        }
+    }while (!cond(pick));
+    return pick;
+}
+
+unsigned validateIntInput(const char* prompt, const char* errorMessage){
     char validInput = 0;
     unsigned input = 0;
     do {
@@ -46,10 +59,6 @@ char validateOption(const char* prompt, char (*cond)(unsigned), const char* erro
         while (getchar() != '\n');
         if (!validInput) {
             printf("Enter a valid number!\n");
-        }
-        else if(!cond(input)) {
-            printf("%s", errorMessage);
-            validInput = 0;
         }
     }while (!validInput);
     return input;
@@ -75,7 +84,7 @@ double validateDoubleInput(const char* prompt, char (*cond)(double), const char*
 
 char* validateStringInput(const char* prompt, char (*cond)(char*), const char* errorMessage) {
     char validInput = 0;
-    char static input[MAX_NAME_LENGTH];
+    char static input[3];
     do {
         printf("%s", prompt);
         validInput = scanf("%s", input);
@@ -94,28 +103,10 @@ char* validateStringInput(const char* prompt, char (*cond)(char*), const char* e
 
 //------------------FILES------------------
 
-char* validateFileName(char (*cond)(char*), const char* errorMessage) {
-    char validInput = 0;
-    static char fileName[MAX_NAME_LENGTH]; 
-    do {
-        printf("Enter file name: ");
-        validInput = scanf("%s", fileName); 
-        while (getchar() != '\n'); 
-        if (containsForbiddenChars(fileName)) {
-            printf("File name contains forbidden characters!\n");
-            validInput = 0;
-        }
-        else if (tooLong(fileName)) {
-            printf("File name is too long!\n");
-            validInput = 0;
-        }
-        else if (!cond(fileName)) {
-            printf("%s", errorMessage);
-            validInput = 0;
-        }
-    } while (!validInput);
-    
-    return fileName; 
+void appendSignature(char* fileName) {
+    if (strlen(fileName) < 4 || strcmp(&fileName[strlen(fileName) - 4], ".csv") != 0) {
+        strcat(fileName, ".csv");
+    }
 }
 
 char fileAlreadyExists(const char* fileName) {
@@ -135,4 +126,23 @@ char getExistingFileName(char* fileName) {
     return (fileAlreadyExists(fileName));
 }
 
+char* validateFileName(char (*cond)(char*), const char* errorMessage) {
+    char validInput = 0;
+    static char fileName[MAX_NAME_LENGTH]; 
+    do {
+        printf("Enter file name (only alphanumeric characters, max %d characters): ", MAX_NAME_LENGTH);
+        validInput = scanf("%s", fileName); 
+        while (getchar() != '\n'); 
+        if (containsForbiddenChars(fileName) || tooLong(fileName)) {
+            printf("Invalid file name!\n");
+            validInput = 0;
+        }
+        else if (!cond(fileName)) {
+            printf("%s", errorMessage);
+            validInput = 0;
+        }
+    } while (!validInput);
+    appendSignature(fileName);
+    return fileName; 
+}
 #endif
