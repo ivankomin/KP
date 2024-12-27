@@ -66,7 +66,7 @@ unsigned validateIntInput(const char* prompt, const char* errorMessage){
 
 double validateDoubleInput(const char* prompt, char (*cond)(double), const char* errorMessage){
     char validInput = 0;
-    double input = 0;
+    double input = 0.0;
     do {
         printf("%s", prompt);
         validInput = scanf("%lf", &input);
@@ -84,7 +84,7 @@ double validateDoubleInput(const char* prompt, char (*cond)(double), const char*
 
 char* validateStringInput(const char* prompt, char (*cond)(char*), const char* errorMessage) {
     char validInput = 0;
-    char static input[3];
+    static char input[3];
     do {
         printf("%s", prompt);
         validInput = scanf("%s", input);

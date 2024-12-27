@@ -6,6 +6,7 @@ int main(){
     printf("This is a file manager program. Create, read, edit and delete files and records.\n");
     printMenu();
     char option = 0;
+    unsigned recordNumber = 0;
     char* fileName = "a.csv"; 
     do {
         option = validateChars("Enter your option: ",optionInRange, "Invalid input!\n");
@@ -28,11 +29,12 @@ int main(){
                 break;
             case '4':
                 //fileName = validateFileName(getExistingFileName, "File does not exist!\n");
-                unsigned recordNumber = validateIntInput("Enter record number: ", "Invalid input!\n");
+                recordNumber = validateIntInput("Enter record number: ", "Invalid input!\n");
                 readRecord(fileName, recordNumber); 
                 break;
             case '5':
-                printf("option 5\n"); 
+                recordNumber = validateIntInput("Enter record number: ", "Invalid input!\n");
+                editRecord(fileName, recordNumber); 
                 break;
             case '6':
                 printf("option 6\n"); 

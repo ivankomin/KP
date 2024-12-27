@@ -5,6 +5,8 @@
 #include <unistd.h>
 #define MAX_REGION_LENGTH 3
 #define MAX_BUFFER_SIZE 256
+#define MAX_RECORDS 100
+
 
 char line[MAX_BUFFER_SIZE];
 FILE *file;
@@ -121,6 +123,44 @@ void readRecord(const char* fileName, int recordNumber) {
     fclose(file);
 }
 
+void editRecord(const char* fileName, int recordNumber) {
+    Record records[MAX_RECORDS];
+    int recordCount = 0;
+    file = fopen(fileName, "r+");
+    if (file == NULL) {
+        printf("Error opening file");
+        return;
+    }
+    while (fgets(line, sizeof(line), file)) {
+        Record currentRecord;
+        if (sscanf(line, "%2[^,],%lf,%lf", currentRecord.region, &currentRecord.area, &currentRecord.population) == 3) {
+            records[recordCount] = currentRecord;
+            recordCount++;
+        }
+    }
+    fclose(file);
+    if (recordCount < recordNumber) {
+        printf("Record %d not found.\n", recordNumber);
+        return;
+    }
+    Record *selectedRecord = &records[recordNumber - 1];
+
+    char* input = validateStringInput("Enter region: ", isAlphabetic, "Region contains forbidden characters!\n");
+    snprintf(selectedRecord->region, MAX_REGION_LENGTH, "%s", input);
+    selectedRecord->area = validateDoubleInput("Enter area: ",isPositive, "Area must be positive!\n");
+    selectedRecord->population = validateDoubleInput("Enter population: ",isPositive, "Population must be positive!\n");
+
+    file = fopen(fileName, "w");
+    if (file == NULL) {
+        printf("Error opening file");
+        return;
+    }
+    for (int i = 0; i < recordCount; i++) {
+        fprintf(file, "%s,%.2lf,%.2lf\n", records[i].region, records[i].area, records[i].population);
+    }
+    fclose(file);
+    printf("Record %d edited successfully.\n", recordNumber);
+}
 //and ends approximately here
 
 void forceWorkDir(){
