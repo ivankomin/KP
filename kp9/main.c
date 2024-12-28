@@ -2,13 +2,16 @@
 #include <stdlib.h>
 #include "func.h"
 #include "validation.h"
+
 int main(){
-    forceWorkDir();
-    printf("This is a file manager program. Create, read, edit and delete files and records.\n");
+    //forceWorkDir();
     char option = 0;
     unsigned recordNumber = 0;
+    unsigned recordCount = 0;
     char* fileName = "a.csv"; 
     do {
+        system("cls");
+        printf("This is a file manager program. Create, read, edit and delete files and records.\n");
         printMenu();
         option = validateChars("Enter your option: ",optionInRange, "Invalid input!\n");
         switch (option) {
@@ -19,37 +22,44 @@ int main(){
                 break;
             case '1':
                 system("cls");
-                //fileName = validateFileName(getExistingFileName, "File does not exist!\n");
                 readFile(fileName); 
                 break;
             case '2':
-                //fileName = validateFileName(getExistingFileName, "File does not exist!\n");
                 deleteFile(fileName);
                 break;
             case '3':
                 system("cls");
-                //fileName = validateFileName(getExistingFileName, "File does not exist!\n");
                 writeRecord(fileName);
                 break;
             case '4':
                 system("cls");
-                //fileName = validateFileName(getExistingFileName, "File does not exist!\n");
-                recordNumber = validateIntInput("Enter record number: ", "Invalid input!\n");
-                readRecord(fileName, recordNumber); 
+                recordCount = countAllRecords(fileName);
+                recordNumber = validateIntInput("Enter record number: ", 1, recordCount, "Invalid record position.\n");
+                readRecord(fileName, recordNumber);
                 break;
             case '5':
-                recordNumber = validateIntInput("Enter record number: ", "Invalid input!\n");
+                system("cls");
+                recordCount = countAllRecords(fileName);
+                recordNumber = validateIntInput("Enter record number: ", 1, recordCount, "Invalid record position.\n");
                 editRecord(fileName, recordNumber); 
                 break;
             case '6':
+                system("cls");
                 char sortBy = validateChars("Which field do you want to sort by? (1 - region, 2 - area, 3 - population): ", sortByInRange, "Invalid input!\n");
                 char sortOrder = validateChars("In what order do you want to sort? (1 - ascending, 2 - descending): ", sortOrderInRange, "Invalid input!\n");
+                sortRecords(fileName, sortOrder, sortBy);  
                 break;
             case '7':
-                printf("option 7\n");
+                system("cls");    
+                recordCount = countAllRecords(fileName);
+                unsigned position = validateIntInput("Enter the insert position: ", 1, recordCount+1, "Invalid insert position.\n");
+                insertRecord(fileName, position);
                 break;
             case '8':
-                printf("option 8\n");
+                system("cls");
+                recordCount = countAllRecords(fileName);
+                recordNumber = validateIntInput("Enter record number: ", 1, recordCount, "Invalid record position.\n");
+                deleteRecord(fileName, recordNumber);
                 break;
             case '9':
                 printf("Exiting the program...\n");

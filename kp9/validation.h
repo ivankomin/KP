@@ -42,7 +42,6 @@ char isAlphabetic(char *str) {
 }
 
 //------------------INPUT------------------
-
 char validateChars(const char* prompt, char (*cond)(char), const char* errorMessage){
     char pick = 0;
     do{
@@ -56,17 +55,20 @@ char validateChars(const char* prompt, char (*cond)(char), const char* errorMess
     return pick;
 }
 
-unsigned validateIntInput(const char* prompt, const char* errorMessage){
-    char validInput = 0;
-    unsigned input = 0;
+unsigned validateIntInput(const char* prompt, unsigned min, unsigned max, const char* errorMessage){
+    unsigned input;
+    int validInput = 0;
     do {
         printf("%s", prompt);
         validInput = scanf("%u", &input);
         while (getchar() != '\n');
         if (!validInput) {
             printf("Enter a valid number!\n");
+        } else if (input < min || input > max) {
+            printf("%s", errorMessage);
+            validInput = 0;
         }
-    }while (!validInput);
+    } while (!validInput);
     return input;
 }
 
