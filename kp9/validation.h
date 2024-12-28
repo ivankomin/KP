@@ -21,6 +21,12 @@ char isPositive(double num) {
 char optionInRange(char option) {
     return option >= '0' && option <= '9';
 }
+char sortByInRange(char option) {
+    return option >= '1' && option <= '3';
+}
+char sortOrderInRange(char option) {
+    return option == '1' || option == '2';
+}
 char isAlphabetic(char *str) {
     if (strlen(str) == 0) {
         printf("Input cannot be empty!\n");

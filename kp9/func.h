@@ -5,17 +5,16 @@
 #include <unistd.h>
 #define MAX_REGION_LENGTH 3
 #define MAX_BUFFER_SIZE 256
-#define MAX_RECORDS 100
 
-
-char line[MAX_BUFFER_SIZE];
-FILE *file;
 typedef struct{
     char region[MAX_REGION_LENGTH];
     double area;
     double population;
 } Record;
+
 Record record;
+char line[MAX_BUFFER_SIZE];
+FILE *file;
 
 void printMenu(){
     printf("\nMenu:\n"
@@ -28,7 +27,7 @@ void printMenu(){
            "  3 - create record\n"
            "  4 - read record\n"
            "  5 - edit record\n"
-           "  6 - sort record\n"
+           "  6 - sort records\n"
            "  7 - paste record\n"
            "  8 - delete record\n"
            "\n"
@@ -124,43 +123,57 @@ void readRecord(const char* fileName, int recordNumber) {
 }
 
 void editRecord(const char* fileName, int recordNumber) {
-    Record records[MAX_RECORDS];
-    int recordCount = 0;
-    file = fopen(fileName, "r+");
-    if (file == NULL) {
-        printf("Error opening file");
+    FILE* inputFile = fopen(fileName, "r");
+    if (inputFile == NULL) {
+        printf("Error opening file for reading!\n");
         return;
     }
-    while (fgets(line, sizeof(line), file)) {
-        Record currentRecord;
-        if (sscanf(line, "%2[^,],%lf,%lf", currentRecord.region, &currentRecord.area, &currentRecord.population) == 3) {
-            records[recordCount] = currentRecord;
-            recordCount++;
+    FILE* tempFile = fopen("temp.csv", "w");
+    if (tempFile == NULL) {
+        printf("Error opening temporary file for writing!\n");
+        fclose(inputFile);
+        return;
+    }
+    int currentRecord = 0;
+    int recordFound = 0;
+
+    while (fgets(line, sizeof(line), inputFile)) {
+        currentRecord++;
+        if (currentRecord == recordNumber) {
+            if (sscanf(line, "%2[^,],%lf,%lf", record.region, &record.area, &record.population) == 3) {
+                printf("Editing record %d:\n", recordNumber);
+                char* input = validateStringInput("Enter new region: ", isAlphabetic, "Region contains forbidden characters!\n");
+                snprintf(record.region, MAX_REGION_LENGTH, "%s", input);
+                record.area = validateDoubleInput("Enter new area: ", isPositive, "Area must be positive!\n");
+                record.population = validateDoubleInput("Enter new population: ", isPositive, "Population must be positive!\n");
+                fprintf(tempFile, "%s,%.2lf,%.2lf\n", record.region, record.area, record.population);
+                recordFound = 1;
+                continue;
+            } else {
+                printf("Error parsing record %d.\n", recordNumber);
+            }
         }
+        fputs(line, tempFile);
     }
-    fclose(file);
-    if (recordCount < recordNumber) {
+
+    fclose(inputFile);
+    fclose(tempFile);
+
+    if (!recordFound) {
         printf("Record %d not found.\n", recordNumber);
+        remove("temp.csv"); 
         return;
     }
-    Record *selectedRecord = &records[recordNumber - 1];
-
-    char* input = validateStringInput("Enter region: ", isAlphabetic, "Region contains forbidden characters!\n");
-    snprintf(selectedRecord->region, MAX_REGION_LENGTH, "%s", input);
-    selectedRecord->area = validateDoubleInput("Enter area: ",isPositive, "Area must be positive!\n");
-    selectedRecord->population = validateDoubleInput("Enter population: ",isPositive, "Population must be positive!\n");
-
-    file = fopen(fileName, "w");
-    if (file == NULL) {
-        printf("Error opening file");
+    if (remove(fileName) != 0 || rename("temp.csv", fileName) != 0) {
+        printf("Error replacing the original file!\n");
         return;
     }
-    for (int i = 0; i < recordCount; i++) {
-        fprintf(file, "%s,%.2lf,%.2lf\n", records[i].region, records[i].area, records[i].population);
-    }
-    fclose(file);
-    printf("Record %d edited successfully.\n", recordNumber);
+    printf("Record %d edited successfully.\nNew record:\n", recordNumber);
+    printf("Region: %s\n", record.region);
+    printf("Area: %.2lf\n", record.area);
+    printf("Population: %.2lf\n", record.population);
 }
+
 //and ends approximately here
 
 void forceWorkDir(){
