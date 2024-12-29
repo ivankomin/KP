@@ -4,9 +4,22 @@
 #include <conio.h>
 #include "validation.h"
 #include <unistd.h>
+#include <dirent.h>
+#include <string.h>
 #define MAX_REGION_LENGTH 3
 #define MAX_BUFFER_SIZE 256
 #define MAX_RECORDS 100
+
+#define CREATE_FILE '0'
+#define READ_FILE '1'
+#define DELETE_FILE '2'
+#define CREATE_RECORD '3'
+#define READ_RECORD '4'
+#define EDIT_RECORD '5'
+#define SORT_RECORDS '6'
+#define INSERT_RECORD '7'
+#define DELETE_RECORD '8'
+#define EXIT '9'
 
 typedef struct{
     char region[MAX_REGION_LENGTH];
@@ -21,19 +34,19 @@ FILE *file;
 void printMenu(){
     printf("\nMenu:\n"
            "File mode:\n"
-           "  0 - create file\n"
-           "  1 - read file\n"
-           "  2 - delete file\n"
+           "  %c - create file\n"
+           "  %c - read file\n"
+           "  %c - delete file\n"
            "\n"
            "Records mode:\n"
-           "  3 - create record\n"
-           "  4 - read record\n"
-           "  5 - edit record\n"
-           "  6 - sort records\n"
-           "  7 - insert record\n"
-           "  8 - delete record\n"
+           "  %c - create record\n"
+           "  %c - read record\n"
+           "  %c - edit record\n"
+           "  %c - sort records\n"
+           "  %c - insert record\n"
+           "  %c - delete record\n"
            "\n"
-           "  9 - Exit the program\n\n");
+           "  %c - Exit the program\n\n", CREATE_FILE, READ_FILE, DELETE_FILE, CREATE_RECORD, READ_RECORD, EDIT_RECORD, SORT_RECORDS, INSERT_RECORD, DELETE_RECORD, EXIT);
 }
 
 void createFile(char* fileName) {
@@ -96,6 +109,11 @@ void readFile(const char* fileName) {
 }
 
 void deleteFile(char* fileName) {
+    printf("Are you sure you want to delete the file %s?\n ", fileName);
+    char choice = validateChars("y/n; ", yesNo, "Invalid choice!\n");
+    if (choice == 'n' || choice == 'N') {
+        return;
+    }
     if (remove(fileName) == 0) {
         printf("File deleted successfully!\n");
     }
@@ -104,6 +122,25 @@ void deleteFile(char* fileName) {
     }
     printf("Press any key to return to the menu");
     getch();
+}
+
+void listFiles(const char* directoryPath, const char* extension) {
+    DIR* dir = opendir(directoryPath);
+    if (dir == NULL) {
+        printf("Error: Unable to open directory '%s'\n", directoryPath);
+        return;
+    }
+
+    printf("Available files:\n");
+
+    struct dirent* entry;
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_name[0] != '.' && strstr(entry->d_name, extension) != NULL) {
+            printf("- %s\n", entry->d_name);
+        }
+    }
+
+    closedir(dir);
 }
 //record functions start here
 void writeRecord(const char* fileName) {

@@ -6,9 +6,8 @@
 #define MAX_NAME_LENGTH 40
 #define FORBIDDEN_CHARS "/\\:*?\"<>|()!@#$&^?;¬~'"
 FILE *file;
-// TODO this is an absolute mess of a file that im totally gonna clean up (i won't)
 
-//------------------CONDITIONS------------------
+//conditions
 char tooLong(const char* str) {
     return strlen(str) > MAX_NAME_LENGTH;
 }
@@ -27,6 +26,9 @@ char sortByInRange(char option) {
 char sortOrderInRange(char option) {
     return option == '1' || option == '2';
 }
+char yesNo(char option) {
+    return option == 'y' || option == 'Y' || option == 'n' || option == 'N';
+}
 char isAlphabetic(char *str) {
     if (strlen(str) == 0) {
         printf("Input cannot be empty!\n");
@@ -41,7 +43,7 @@ char isAlphabetic(char *str) {
     return 1;
 }
 
-//------------------INPUT------------------
+//input
 char validateChars(const char* prompt, char (*cond)(char), const char* errorMessage){
     char pick = 0;
     do{
@@ -92,7 +94,7 @@ double validateDoubleInput(const char* prompt, char (*cond)(double), const char*
 
 char* validateStringInput(const char* prompt, char (*cond)(char*), const char* errorMessage) {
     char validInput = 0;
-    static char input[3];
+    static char input[2];
     do {
         printf("%s", prompt);
         validInput = scanf("%s", input);
@@ -109,13 +111,7 @@ char* validateStringInput(const char* prompt, char (*cond)(char*), const char* e
 
 }
 
-//------------------FILES------------------
-
-void appendSignature(char* fileName) {
-    if (strlen(fileName) < 4 || strcmp(&fileName[strlen(fileName) - 4], ".csv") != 0) {
-        strcat(fileName, ".csv");
-    }
-}
+//files
 
 char fileAlreadyExists(const char* fileName) {
     file = fopen(fileName, "r");
@@ -133,6 +129,11 @@ char getNewFileName(char* fileName) {
 char getExistingFileName(char* fileName) {
     return (fileAlreadyExists(fileName));
 }
+void appendSignature(char* fileName) {
+    if (strlen(fileName) < 4 || strcmp(&fileName[strlen(fileName) - 4], ".csv") != 0) {
+        strcat(fileName, ".csv");
+    }
+}
 
 char* validateFileName(char (*cond)(char*), const char* errorMessage) {
     char validInput = 0;
@@ -145,12 +146,14 @@ char* validateFileName(char (*cond)(char*), const char* errorMessage) {
             printf("Invalid file name!\n");
             validInput = 0;
         }
-        else if (!cond(fileName)) {
-            printf("%s", errorMessage);
-            validInput = 0;
+        else {
+            appendSignature(fileName);
+            if (!cond(fileName)) {
+                printf("%s", errorMessage);
+                validInput = 0;
+            }
         }
     } while (!validInput);
-    appendSignature(fileName);
     return fileName; 
 }
 #endif
