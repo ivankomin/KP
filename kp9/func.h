@@ -146,6 +146,8 @@ int listFiles(const char* directoryPath, const char* extension) {
     closedir(dir);
     return fileCount;
 }
+
+
 //record functions start here
 void writeRecord(const char* fileName) {
     file = fopen(fileName, "a"); 
@@ -155,8 +157,8 @@ void writeRecord(const char* fileName) {
     }
     char* input = validateStringInput("Enter region: ", isAlphabetic, "Region contains forbidden characters!\n");
     snprintf(record.region, MAX_REGION_LENGTH, "%s", input);
-    record.area = validateDoubleInput("Enter area: ",isPositive, "Area must be positive!\n");
-    record.population = validateDoubleInput("Enter population: ",isPositive, "Population must be positive!\n");
+    record.area = validateDoubleInput("Enter area");
+    record.population = validateDoubleInput("Enter population");
 
     fprintf(file, "%s,%.2lf,%.2lf\n", record.region, record.area, record.population);
     fclose(file);
@@ -215,8 +217,8 @@ void editRecord(const char* fileName, int recordNumber) {
                 printf("Editing record %d:\n", recordNumber);
                 char* input = validateStringInput("Enter new region: ", isAlphabetic, "Region contains forbidden characters!\n");
                 snprintf(record.region, MAX_REGION_LENGTH, "%s", input);
-                record.area = validateDoubleInput("Enter new area: ", isPositive, "Area must be positive!\n");
-                record.population = validateDoubleInput("Enter new population: ", isPositive, "Population must be positive!\n");
+                record.area = validateDoubleInput("Enter new area");
+                record.population = validateDoubleInput("Enter new population");
                 fprintf(tempFile, "%s,%.2lf,%.2lf\n", record.region, record.area, record.population);
                 recordFound = 1;
                 continue;
@@ -368,8 +370,8 @@ void insertRecord(const char* fileName, unsigned position) {
 
     char* input = validateStringInput("Enter new region: ", isAlphabetic, "Region contains forbidden characters!\n");
     snprintf(record.region, MAX_REGION_LENGTH, "%s", input);
-    record.area = validateDoubleInput("Enter new area: ", isPositive, "Area must be positive!\n");
-    record.population = validateDoubleInput("Enter new population: ", isPositive, "Population must be positive!\n");
+    record.area = validateDoubleInput("Enter new area");
+    record.population = validateDoubleInput("Enter new population");
 
     for (unsigned i = recordCount; i >= position; i--) {
         records[i] = records[i - 1];

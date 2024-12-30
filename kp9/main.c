@@ -48,12 +48,9 @@ int main(){
             case READ_FILE:
                 system("cls");
                 recordCount = countAllRecords(fileName);
-                if (recordCount == 0) {
-                    printf("The file is empty! You gotta fill it with something first. Press any key to return to the menu.\n");
-                    getch();
-                    break;
-                }
-                readFile(fileName); 
+                if (!isFileEmpty(recordCount)) {
+                    readFile(fileName);
+                } 
                 break;
             case DELETE_FILE:
                 system("cls");
@@ -66,9 +63,7 @@ int main(){
             case READ_RECORD:
                 system("cls");
                 recordCount = countAllRecords(fileName);
-                if (recordCount == 0) {
-                    printf("The file is empty! You gotta fill it with something first. Press any key to return to the menu.\n");
-                    getch();
+                if (isFileEmpty(recordCount)){
                     break;
                 }
                 recordNumber = validateIntInput("Enter record number: ", 1, recordCount, "Invalid record position.\n");
@@ -77,9 +72,7 @@ int main(){
             case EDIT_RECORD:
                 system("cls");
                 recordCount = countAllRecords(fileName);
-                if (recordCount == 0) {
-                    printf("The file is empty! You gotta fill it with something first. Press any key to return to the menu.\n");
-                    getch();
+                if (isFileEmpty(recordCount)){
                     break;
                 }
                 recordNumber = validateIntInput("Enter record number: ", 1, recordCount, "Invalid record position.\n");
@@ -88,9 +81,7 @@ int main(){
             case SORT_RECORDS:
                 system("cls");
                 recordCount = countAllRecords(fileName);
-                if (recordCount == 0) {
-                    printf("The file is empty! You gotta fill it with something first. Press any key to return to the menu.\n");
-                    getch();
+                if (isFileEmpty(recordCount)){
                     break;
                 }
                 char sortBy = validateChars("Which field do you want to sort by? (1 - region, 2 - area, 3 - population): ", sortByInRange, "Invalid input!\n");
@@ -100,9 +91,7 @@ int main(){
             case INSERT_RECORD:
                 system("cls");    
                 recordCount = countAllRecords(fileName);
-                if (recordCount == 0) {
-                    printf("The file is empty! You gotta fill it with something first. Press any key to return to the menu.\n");
-                    getch();
+                if (isFileEmpty(recordCount)){
                     break;
                 }
                 unsigned position = validateIntInput("Enter the insert position: ", 1, recordCount+1, "Invalid insert position.\n");
@@ -111,9 +100,7 @@ int main(){
             case DELETE_RECORD:
                 system("cls");
                 recordCount = countAllRecords(fileName);
-                if (recordCount == 0) {
-                    printf("The file is empty! You gotta fill it with something first. Press any key to return to the menu.\n");
-                    getch();
+                if (isFileEmpty(recordCount)){
                     break;
                 }
                 recordNumber = validateIntInput("Enter record number: ", 1, recordCount, "Invalid record position.\n");

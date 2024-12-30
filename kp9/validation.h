@@ -3,8 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <conio.h>
 #define MAX_NAME_LENGTH 40
 #define FORBIDDEN_CHARS "/\\:*?\"<>|()!@#$&^?;¬~'"
+#define MAX_DOUBLE 1e10
+#define MIN_DOUBLE 1e-2
 FILE *file;
 
 //conditions
@@ -74,18 +77,15 @@ unsigned validateIntInput(const char* prompt, unsigned min, unsigned max, const 
     return input;
 }
 
-double validateDoubleInput(const char* prompt, char (*cond)(double), const char* errorMessage){
+double validateDoubleInput(const char* prompt){
     char validInput = 0;
     double input = 0.0;
     do {
-        printf("%s", prompt);
+        printf("%s [%.2e, %.2e]: ", prompt, MIN_DOUBLE, MAX_DOUBLE);
         validInput = scanf("%lf", &input);
         while (getchar() != '\n');
-        if (!validInput) {
+        if (!validInput || input > MAX_DOUBLE || input < MIN_DOUBLE) {
             printf("Enter a valid number!\n");
-        }
-        else if(!cond(input)){
-            printf("%s", errorMessage);
             validInput = 0;
         }
     }while (!validInput);
@@ -112,6 +112,15 @@ char* validateStringInput(const char* prompt, char (*cond)(char*), const char* e
 }
 
 //files
+char isFileEmpty(unsigned recordCount) {
+    if (recordCount == 0) {
+        printf("File is empty!\nPress any key to return to the menu.\n");
+        getch();
+        return 1;
+    }
+    return 0;
+}
+
 char fileAlreadyExists(const char* fileName) {
     file = fopen(fileName, "r");
     if (file == NULL) {
