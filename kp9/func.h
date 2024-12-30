@@ -2,10 +2,11 @@
 #define FUNC_H
 #include <stdio.h>
 #include <conio.h>
-#include "validation.h"
 #include <unistd.h>
 #include <dirent.h>
 #include <string.h>
+#include "validation.h"
+
 #define MAX_REGION_LENGTH 3
 #define MAX_BUFFER_SIZE 256
 #define MAX_RECORDS 100
@@ -57,7 +58,7 @@ void createFile(char* fileName) {
     }
     fclose(file);
     printf("File created successfully!\n");
-    printf("Press any key to return to the menu");
+    printf("Press any key to proceed to the menu");
     getch();
 }
 
@@ -110,7 +111,7 @@ void readFile(const char* fileName) {
 
 void deleteFile(char* fileName) {
     printf("Are you sure you want to delete the file %s?\n ", fileName);
-    char choice = validateChars("y/n; ", yesNo, "Invalid choice!\n");
+    char choice = validateChars("(y/n): ", yesNo, "Invalid choice!\n");
     if (choice == 'n' || choice == 'N') {
         return;
     }
@@ -124,23 +125,26 @@ void deleteFile(char* fileName) {
     getch();
 }
 
-void listFiles(const char* directoryPath, const char* extension) {
+int listFiles(const char* directoryPath, const char* extension) {
     DIR* dir = opendir(directoryPath);
     if (dir == NULL) {
         printf("Error: Unable to open directory '%s'\n", directoryPath);
-        return;
+        return 0;
     }
+
+    int fileCount = 0;
+    struct dirent* entry;
 
     printf("Available files:\n");
 
-    struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
         if (entry->d_name[0] != '.' && strstr(entry->d_name, extension) != NULL) {
             printf("- %s\n", entry->d_name);
+            fileCount++;
         }
     }
-
     closedir(dir);
+    return fileCount;
 }
 //record functions start here
 void writeRecord(const char* fileName) {

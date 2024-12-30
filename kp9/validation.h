@@ -112,7 +112,6 @@ char* validateStringInput(const char* prompt, char (*cond)(char*), const char* e
 }
 
 //files
-
 char fileAlreadyExists(const char* fileName) {
     file = fopen(fileName, "r");
     if (file == NULL) {
