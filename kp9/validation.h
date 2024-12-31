@@ -17,9 +17,6 @@ char tooLong(const char* str) {
 char containsForbiddenChars(const char* str) {
     return strpbrk(str, FORBIDDEN_CHARS) != NULL;
 }
-char isPositive(double num) {
-    return num > 0.0;
-}
 char optionInRange(char option) {
     return option >= '0' && option <= '9';
 }
