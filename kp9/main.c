@@ -4,7 +4,7 @@
 #include "validation.h"
 
 int main(){
-    //forceWorkDir();
+    forceWorkDir();
     char option = 0;
     unsigned recordNumber = 0;
     unsigned recordCount = 0;

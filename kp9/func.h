@@ -7,7 +7,7 @@
 #include <string.h>
 #include "validation.h"
 
-#define MAX_REGION_LENGTH 3
+#define MAX_REGION_LENGTH 3 //with the null terminator so its actually 2 :)
 #define MAX_BUFFER_SIZE 256
 #define MAX_RECORDS 100
 
@@ -241,12 +241,8 @@ void editRecord(const char* fileName, int recordNumber) {
         printf("Error replacing the original file!\n");
         return;
     }
-    printf("Record %d edited successfully.\nNew record:\n", recordNumber);
-    printf("Region: %s\n", record.region);
-    printf("Area: %.2lf\n", record.area);
-    printf("Population: %.2lf\n", record.population);
-    printf("Press any key to return to the menu");
-    getch();
+    printf("Record %d edited successfully.\nNew file contents:\n", recordNumber);
+    readFile(fileName);
 }
 void sortRecords(const char* fileName, char sortOrder, char sortBy) {
     file = fopen(fileName, "r");
@@ -393,8 +389,6 @@ void insertRecord(const char* fileName, unsigned position) {
 
     printf("Record inserted successfully!\n New file contents:\n");
     readFile(fileName);
-    printf("Press any key to return to the menu");
-    getch();
 }    
 
 void deleteRecord(const char* fileName, int recordNumber) {
