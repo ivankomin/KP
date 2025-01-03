@@ -58,6 +58,10 @@ int main(){
                 break;
             case CREATE_RECORD:
                 system("cls");
+                if (countAllRecords(fileName) >= MAX_RECORDS) {
+                    printf("The file contains more than 100 records.\n");
+                    break;
+                }
                 writeRecord(fileName);
                 break;
             case READ_RECORD:
@@ -71,6 +75,7 @@ int main(){
                 break;
             case EDIT_RECORD:
                 system("cls");
+                previewAllRecords(fileName);
                 recordCount = countAllRecords(fileName);
                 if (isFileEmpty(recordCount)){
                     break;
@@ -89,9 +94,10 @@ int main(){
                 sortRecords(fileName, sortOrder, sortBy);  
                 break;
             case INSERT_RECORD:
-                system("cls");    
+                system("cls");
+                previewAllRecords(fileName);    
                 recordCount = countAllRecords(fileName);
-                if (isFileEmpty(recordCount)){
+                if (isFileEmpty(recordCount)  || recordCount >= MAX_RECORDS){
                     break;
                 }
                 unsigned position = validateIntInput("Enter the insert position: ", 1, recordCount+1, "Invalid insert position.\n");
@@ -99,6 +105,7 @@ int main(){
                 break;
             case DELETE_RECORD:
                 system("cls");
+                previewAllRecords(fileName);
                 recordCount = countAllRecords(fileName);
                 if (isFileEmpty(recordCount)){
                     break;

@@ -89,23 +89,21 @@ double validateDoubleInput(const char* prompt){
     return input;
 }
 
-char* validateStringInput(const char* prompt, char (*cond)(char*), const char* errorMessage) {
-    char validInput = 0;
-    static char input[2];
+void validateStringInput(const char* prompt, char (*cond)(char*), const char* errorMessage, char* dest, int maxLength) {
+    char input[maxLength];
+    char *validInput = 0;
     do {
         printf("%s", prompt);
-        validInput = scanf("%s", input);
-        while (getchar() != '\n');
-        if (!validInput) {
-            printf("Enter a valid string!\n");
-        }
-        else if (!cond(input)) {
+        validInput = fgets(input, sizeof(input), stdin);
+        while(getchar() != '\n');
+        input[strcspn(input, "\n")] = '\0';
+        if (!cond(input)) {
             printf("%s", errorMessage);
             validInput = 0;
         }
     } while (!validInput);
-    return input;
-
+    strncpy(dest, input, maxLength - 1);
+    dest[maxLength - 1] = '\0';
 }
 
 //files

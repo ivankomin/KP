@@ -7,7 +7,7 @@
 #include <string.h>
 #include "validation.h"
 
-#define MAX_REGION_LENGTH 3 //with the null terminator so its actually 2 :)
+#define MAX_REGION_LENGTH 3 //with the null terminator
 #define MAX_BUFFER_SIZE 256
 #define MAX_RECORDS 100
 
@@ -155,8 +155,7 @@ void writeRecord(const char* fileName) {
         printf("Error opening file");
         return;
     }
-    char* input = validateStringInput("Enter region: ", isAlphabetic, "Region contains forbidden characters!\n");
-    snprintf(record.region, MAX_REGION_LENGTH, "%s", input);
+    validateStringInput("Enter region: ", isAlphabetic, "Region contains forbidden characters!\n",record.region, MAX_REGION_LENGTH);
     record.area = validateDoubleInput("Enter area");
     record.population = validateDoubleInput("Enter population");
 
@@ -215,8 +214,7 @@ void editRecord(const char* fileName, int recordNumber) {
         if (currentRecord == recordNumber) {
             if (sscanf(line, "%2[^,],%lf,%lf", record.region, &record.area, &record.population) == 3) {
                 printf("Editing record %d:\n", recordNumber);
-                char* input = validateStringInput("Enter new region: ", isAlphabetic, "Region contains forbidden characters!\n");
-                snprintf(record.region, MAX_REGION_LENGTH, "%s", input);
+                validateStringInput("Enter new region: ", isAlphabetic, "Region contains forbidden characters!\n",record.region, MAX_REGION_LENGTH);
                 record.area = validateDoubleInput("Enter new area");
                 record.population = validateDoubleInput("Enter new population");
                 fprintf(tempFile, "%s,%.2lf,%.2lf\n", record.region, record.area, record.population);
@@ -364,10 +362,9 @@ void insertRecord(const char* fileName, unsigned position) {
         return;
     }
 
-    char* input = validateStringInput("Enter new region: ", isAlphabetic, "Region contains forbidden characters!\n");
-    snprintf(record.region, MAX_REGION_LENGTH, "%s", input);
-    record.area = validateDoubleInput("Enter new area");
-    record.population = validateDoubleInput("Enter new population");
+    validateStringInput("Enter region: ", isAlphabetic, "Region contains forbidden characters!\n",record.region, MAX_REGION_LENGTH);
+    record.area = validateDoubleInput("Enter area");
+    record.population = validateDoubleInput("Enter population");
 
     for (unsigned i = recordCount; i >= position; i--) {
         records[i] = records[i - 1];
@@ -422,6 +419,29 @@ void deleteRecord(const char* fileName, int recordNumber) {
     printf("Record deleted successfully!\n New file contents:\n");
     readFile(fileName);
 }
+
+void previewAllRecords(const char* fileName) {
+    file = fopen(fileName, "r");
+    if (file == NULL) {
+        printf("Error opening file\n");
+        return;
+    }
+    printf("Current file contents:\n");
+    int recordNumber = 1;
+    while (fgets(line, sizeof(line), file)){
+        if (sscanf(line, "%2[^,],%lf,%lf", record.region, &record.area, &record.population) == 3) {
+            printf("%d)\n", recordNumber++);
+            printf("Region: %s\n", record.region);
+            printf("Area: %.2lf\n", record.area);
+            printf("Population: %.2lf\n", record.population);
+            printf("---\n");
+        } else {
+            printf("Error: Could not parse line: %s", line);
+        }
+    } 
+    fclose(file);
+    printf("\n");
+}
 //end of record functions
 void forceWorkDir(){
     if (chdir("C:/Users/ivank/projects/KP/kp9") != 0) {
@@ -430,7 +450,7 @@ void forceWorkDir(){
     }
     char cwd[256];
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        printf("Forced Working Directory: %s\n", cwd);
+        printf("\n");
     } else {
         perror("getcwd() error");
     }
